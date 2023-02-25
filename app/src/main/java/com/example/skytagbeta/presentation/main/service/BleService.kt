@@ -218,8 +218,10 @@ class BleService : Service() {
 
     private fun onError(): (Throwable) -> Unit {
         return { throwable -> throwable.message?.let { Log.e(TAG, it)
-                showToast(throwable.message.toString())}
-            reeScan()
+            scanDevice()
+
+        }
+
         }
     }
 
