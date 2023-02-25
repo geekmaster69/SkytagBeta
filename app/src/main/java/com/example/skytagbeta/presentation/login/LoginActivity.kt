@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.example.skytag3.login.model.LoginUserInfo
+import com.example.skytagbeta.presentation.login.model.LoginUserInfo
 import com.example.skytagbeta.base.utils.IdentifierKey
 import com.example.skytagbeta.databinding.ActivityLoginBinding
 import com.example.skytagbeta.presentation.login.viewmodel.LoginViewModel

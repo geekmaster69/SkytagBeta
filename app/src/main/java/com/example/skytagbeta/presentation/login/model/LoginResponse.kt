@@ -1,11 +1,12 @@
-package com.example.skytag3.login.model
+package com.example.skytagbeta.presentation.login.model
 
 import com.google.gson.annotations.SerializedName
 
 data class LoginResponse (
     @SerializedName("estado") val estado: Int,
     @SerializedName("mensaje") val mensaje: String,
-    @SerializedName("usuario") val usuario: Usuario)
+    @SerializedName("usuario") val usuario: Usuario
+)
 
 
 data class Usuario(

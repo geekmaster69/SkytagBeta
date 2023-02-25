@@ -1,8 +1,8 @@
 package com.example.skytagbeta.presentation.login.domain
 
 
-import com.example.skytag3.login.model.LoginResponse
-import com.example.skytag3.login.model.LoginUserInfo
+import com.example.skytagbeta.presentation.login.model.LoginResponse
+import com.example.skytagbeta.presentation.login.model.LoginUserInfo
 import com.example.skytagbeta.presentation.login.network.LoginUserService
 
 class LoginUseCase {

@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.skytag3.login.model.LoginResponse
-import com.example.skytag3.login.model.LoginUserInfo
+import com.example.skytagbeta.presentation.login.model.LoginResponse
+import com.example.skytagbeta.presentation.login.model.LoginUserInfo
 import com.example.skytagbeta.presentation.login.domain.LoginUseCase
 import kotlinx.coroutines.launch
 

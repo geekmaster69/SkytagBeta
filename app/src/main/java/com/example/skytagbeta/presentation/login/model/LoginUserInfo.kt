@@ -1,4 +1,4 @@
-package com.example.skytag3.login.model
+package com.example.skytagbeta.presentation.login.model
 
 import com.google.gson.annotations.SerializedName
 
