@@ -19,4 +19,5 @@
     <string name="login_log">Entrar</string>
     <string name="login_copi_identifier">Copiar Identificador</string>
     <string name="image_login">image login</string>
+    <string name="remember_user">Remember User</string>
 </resources>

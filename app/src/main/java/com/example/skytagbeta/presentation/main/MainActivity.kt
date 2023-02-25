@@ -53,8 +53,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun logOut() {
         Paper.book().write("active", false)
-        Paper.book().delete("user")
-        Paper.book().delete("contrasena")
 
         mWorkerViewModel.cancelWork()
 

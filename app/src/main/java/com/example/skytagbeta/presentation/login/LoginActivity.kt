@@ -36,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
 
         binding.btnLogin.setOnClickListener {
             login()
+
         }
 
         binding.tvIdentificador.setOnClickListener { copyToClipboard() }
@@ -54,13 +55,33 @@ class LoginActivity : AppCompatActivity() {
         if (active){
             startActivity(Intent(this, MainActivity::class.java))
             finish()
+        }else {
+            val remember = Paper.book().read<Boolean>("remember") ?: false
+            if (remember){
+                binding.etUser.text = Paper.book().read("user")
+                binding.etPassword.text = Paper.book().read("contrasena")
+                binding.cbRemember.isChecked = true
+            }
         }
     }
 
     private fun login() {
 
+
+
         val user = binding.etUser.text.toString()
         val password = binding.etPassword.text.toString()
+
+        if (binding.cbRemember.isChecked){
+            Paper.book().write("user", user)
+            Paper.book().write("contrasena", password)
+            Paper.book().write("remember", true)
+        }else{
+            Paper.book().write("user", user)
+            Paper.book().write("contrasena", password)
+            Paper.book().write("remember", false)
+
+        }
 
       mLoginViewModel.onLogin(LoginUserInfo(mensaje = "usuario", usuario = user, contrasena = password))
 
