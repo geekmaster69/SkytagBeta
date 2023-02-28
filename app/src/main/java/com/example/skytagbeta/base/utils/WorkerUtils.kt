@@ -3,6 +3,9 @@ package com.example.skytagbeta.base.utils
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.skytagbeta.R
@@ -13,6 +16,8 @@ import com.example.skytagbeta.base.Constants.VERBOSE_NOTIFICATION_CHANNEL_DESCRI
 import com.example.skytagbeta.base.Constants.VERBOSE_NOTIFICATION_CHANNEL_NAME
 
 private const val TAG = "Workutils"
+
+
 fun makeStatusNotification(message: String, context: Context, codding: Boolean){
 
     // Make a channel if necessary
@@ -30,18 +35,18 @@ fun makeStatusNotification(message: String, context: Context, codding: Boolean){
 
     notificationManager?.createNotificationChannel(channel)
 
-    // Create the notification  SOS o Mensaje normal
+    // Create the notification SOS o Mensaje normal
 
     fun iconBuilder():NotificationCompat.Builder{
-        if (codding) {
-            return NotificationCompat.Builder(context, CHANNEL_ID)
+        return if (codding) {
+            NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_emergency)
                 .setContentTitle(NOTIFICATION_TITLE)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setVibrate(LongArray(0))
         }else {
-            return NotificationCompat.Builder(context, CHANNEL_ID)
+            NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_click)
                 .setContentTitle(NOTIFICATION_TITLE)
                 .setContentText(message)
@@ -51,6 +56,12 @@ fun makeStatusNotification(message: String, context: Context, codding: Boolean){
     }
     // Show the notification
     NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, iconBuilder().build())
+}
+
+ fun showToast(ctx: Context, message: String){
+    Handler(Looper.getMainLooper())
+        .post { Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show()
+        }
 }
 
 

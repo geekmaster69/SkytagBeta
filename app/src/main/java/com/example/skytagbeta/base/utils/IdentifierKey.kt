@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.provider.Settings
 
+
 class IdentifierKey {
 
     @SuppressLint("HardwareIds")
@@ -14,4 +15,6 @@ class IdentifierKey {
             Settings.Secure.ANDROID_ID
         ).uppercase()
     }
+
+
 }

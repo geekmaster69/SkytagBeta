@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.example.skytagbeta.base.utils.showToast
 import com.example.skytagbeta.presentation.main.service.model.UserInfo
 import com.example.skytagbeta.presentation.main.service.viewmodel.ServiceViewModel
 import io.paperdb.Paper
@@ -16,17 +17,6 @@ private const val TAG = "UpdateLocationWorker"
 class UpdateLocationWorker(ctx: Context, params: WorkerParameters): Worker(ctx, params) {
     override fun doWork(): Result {
 
-        return try {
-            sendLocation()
-            Result.success()
-        } catch (throwable: Throwable) {
-            Log.e(TAG, "Error update location")
-            throwable.printStackTrace()
-            Result.failure()
-        }
-    }
-
-    private fun sendLocation() {
         dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val mGpsViewModel = ServiceViewModel()
         Paper.init(applicationContext)
@@ -36,17 +26,28 @@ class UpdateLocationWorker(ctx: Context, params: WorkerParameters): Worker(ctx, 
         val identificador = Paper.book().read<String>("identificador")
         date = dateFormat.format(Date())
 
-        val result = mGpsViewModel.gpsLocationServer( UserInfo(
-            mensaje = "RegistraPosicion",
-            usuario = "rodrigotag",
-            longitud = longitude!!,
-            latitud = latitude!!,
-            tagkey = macAddress!!,
-            contrasena = "1234",
-            codigo = "3",
-            fechahora = date,
-            identificador = identificador!!))
 
-        Log.d(TAG, result.toString())
+        return try {
+            val result = mGpsViewModel.gpsLocationServer( UserInfo(
+                mensaje = "RegistraPosicion",
+                usuario = "rodrigotag",
+                longitud = longitude!!,
+                latitud = latitude!!,
+                tagkey = macAddress!!,
+                contrasena = "1234",
+                codigo = "3",
+                fechahora = date,
+                identificador = identificador!!))
+
+            Log.d(TAG, "$result")
+
+            Result.success()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error update location")
+            showToast(applicationContext, e.message.toString())
+
+            Result.failure()
+        }
     }
+
 }

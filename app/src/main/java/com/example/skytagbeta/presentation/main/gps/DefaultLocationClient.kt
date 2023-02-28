@@ -9,6 +9,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
+import io.paperdb.Paper
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -21,6 +22,7 @@ private val client: FusedLocationProviderClient
 
     @SuppressLint("MissingPermission")
     override fun getLocationClient(interval: Long): Flow<Location> {
+        Paper.init(ctx)
 
         return callbackFlow {
             if (!ctx.hasLocationPermissions()){
@@ -30,9 +32,10 @@ private val client: FusedLocationProviderClient
             val isGPSEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
             val isNetworkEnable = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
-            if (!isGPSEnable && !isNetworkEnable){
+
+         /*   if (!isGPSEnable && !isNetworkEnable){
                 throw LocationClient.LocationException("Activar las comunicaiones")
-            }
+            }*/
 
             val request = LocationRequest.create()
                 .setInterval(interval)

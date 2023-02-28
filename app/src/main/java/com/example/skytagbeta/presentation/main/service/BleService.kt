@@ -1,7 +1,9 @@
 package com.example.skytagbeta.presentation.main.service
 
 import android.app.*
+import android.content.Context
 import android.content.Intent
+import android.location.LocationManager
 import android.os.*
 import android.util.Log
 import android.widget.Toast
@@ -45,6 +47,7 @@ class BleService : Service() {
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private lateinit var locationClient: LocationClient
 
+
     //Envio de informacion
     private val mGpsViewModel = ServiceViewModel()
     private lateinit var dateFormat: SimpleDateFormat
@@ -63,6 +66,8 @@ class BleService : Service() {
         locationClient = DefaultLocationClient(applicationContext, LocationServices
             .getFusedLocationProviderClient(applicationContext))
 
+
+
         //Fecha
         dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
     }
@@ -70,7 +75,7 @@ class BleService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         showNotification()
         updateLocation()
-        return START_REDELIVER_INTENT
+        return START_STICKY
     }
 
     private fun updateLocation() {
@@ -82,12 +87,22 @@ class BleService : Service() {
                 Paper.book().write("longSos", location.longitude)
                 Paper.book().write("gps", location.accuracy)
                 Paper.book().write("speed", location.speed)
+                updateStatusConnections()
 
                 Log.e(TAG, "${location.latitude} ${location.longitude}")
             }.launchIn(serviceScope)
     }
+    //Actualizar el estado de las conexiones
+    private fun updateStatusConnections(){
+        val locationManager = applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val isGPSEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        Paper.book().write("gpsStatus", isGPSEnable.toString())
+
+        Log.d("GPS", "$isGPSEnable")
+    }
 
     fun scanDevice(){
+        showToast("Scanned...")
         rxBleClient.scanBleDevices(scanSettings(), scanFilter())
             .firstElement()
             .subscribe({ scanResult ->
@@ -164,7 +179,7 @@ class BleService : Service() {
 
     private fun scanFilterReconnect(): ScanFilter =
         ScanFilter.Builder()
-            .setDeviceAddress(Paper.book().read("idMac"))
+            .setDeviceAddress(Paper.book().read("macAddress"))
             .build()
 
     private fun scanSettings(): ScanSettings =
@@ -225,7 +240,7 @@ class BleService : Service() {
 
     private fun showToast(message: String){
         Handler(Looper.getMainLooper())
-            .post { Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            .post { Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
         }
     }
 

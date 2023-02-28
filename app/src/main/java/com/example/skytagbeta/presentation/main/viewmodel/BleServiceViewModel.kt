@@ -14,9 +14,6 @@ class BleServiceViewModel: ViewModel() {
 
     private var mBinder = MutableLiveData<BleService.MyBinder?>()
 
-
-
-
     private val serviceConnection = object : ServiceConnection{
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             Log.d(TAG, "onServiceConnected: connected to service")

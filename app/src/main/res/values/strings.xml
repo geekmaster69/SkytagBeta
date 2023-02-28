@@ -17,7 +17,9 @@
     <string name="login_user">Usuario</string>
     <string name="login_password">password</string>
     <string name="login_log">Entrar</string>
-    <string name="login_copi_identifier">Copiar Identificador</string>
+    <string name="login_copi_identifier">Copiar ID</string>
     <string name="image_login">image login</string>
-    <string name="remember_user">Remember User</string>
+    <string name="location_required_error">GPS Active</string>
+    <string name="remember_me">Remember me</string>
+    <string name="required_field">Campo requerído</string>
 </resources>

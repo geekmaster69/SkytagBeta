@@ -9,20 +9,25 @@ import com.example.skytagbeta.presentation.main.service.model.UserInfoResponse
 import com.example.skytagbeta.presentation.main.service.network.UserService
 import kotlinx.coroutines.launch
 
+private const val TAG = "Service ViewMOdel"
 class ServiceViewModel : ViewModel(){
     var gpsModel = MutableLiveData<UserInfoResponse>()
-    val updateServiceLocation = UserService()
+    private val updateServiceLocation = UserService()
 
     fun gpsLocationServer(userInfo: UserInfo){
         viewModelScope.launch {
 
-            val result = updateServiceLocation.updateUserInfo(userInfo)
+            try {
+                val result = updateServiceLocation.updateUserInfo(userInfo)
+                gpsModel.postValue(result)
+                Log.d(TAG, "$result")
 
-            Log.w("RESPUESTA ViewModel", result.toString())
-
-            gpsModel.postValue(result)
-
+            } catch (e: Exception) {
+                Log.e(TAG, "$e")
+            }
 
         }
     }
+
+
 }
