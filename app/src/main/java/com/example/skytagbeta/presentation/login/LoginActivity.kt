@@ -83,8 +83,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun login() {
 
-
-
         val user = binding.etUser.text.toString()
         val password = binding.etPassword.text.toString()
 
@@ -96,7 +94,6 @@ class LoginActivity : AppCompatActivity() {
             Paper.book().write("user", user)
             Paper.book().write("contrasena", password)
             Paper.book().write("remember", false)
-
         }
 
       mLoginViewModel.onLogin(LoginUserInfo(mensaje = "usuario", usuario = user, contrasena = password))

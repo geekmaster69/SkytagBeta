@@ -28,9 +28,7 @@ private val client: FusedLocationProviderClient
             if (!ctx.hasLocationPermissions()){
                 throw LocationClient.LocationException("Faltan Permisos")
             }
-            val locationManager = ctx.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            val isGPSEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-            val isNetworkEnable = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
 
 
          /*   if (!isGPSEnable && !isNetworkEnable){

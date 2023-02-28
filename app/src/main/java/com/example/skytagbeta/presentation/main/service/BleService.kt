@@ -15,6 +15,7 @@ import com.example.skytagbeta.presentation.main.gps.DefaultLocationClient
 import com.example.skytagbeta.presentation.main.gps.LocationClient
 import com.example.skytagbeta.presentation.main.service.model.UserInfo
 import com.example.skytagbeta.presentation.main.service.viewmodel.ServiceViewModel
+import com.example.skytagbeta.presentation.main.utils.vibratePhone
 import com.google.android.gms.location.LocationServices
 import com.polidea.rxandroidble3.NotificationSetupMode
 import com.polidea.rxandroidble3.RxBleClient
@@ -85,20 +86,12 @@ class BleService : Service() {
             .onEach { location ->
                 Paper.book().write("latSos", location.latitude)
                 Paper.book().write("longSos", location.longitude)
-                Paper.book().write("gps", location.accuracy)
+                Paper.book().write("accuracy", location.accuracy.toInt().toString())
                 Paper.book().write("speed", location.speed)
-                updateStatusConnections()
+                Paper.book().write("altitude", location.altitude)
 
                 Log.e(TAG, "${location.latitude} ${location.longitude}")
             }.launchIn(serviceScope)
-    }
-    //Actualizar el estado de las conexiones
-    private fun updateStatusConnections(){
-        val locationManager = applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val isGPSEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        Paper.book().write("gpsStatus", isGPSEnable.toString())
-
-        Log.d("GPS", "$isGPSEnable")
     }
 
     fun scanDevice(){
@@ -111,7 +104,7 @@ class BleService : Service() {
     }
 
     private fun stablesConnection(bleDevice: RxBleDevice) {
-        Paper.book().write("macAddress", bleDevice.macAddress)
+        Paper.book().write("macAddress", bleDevice.macAddress.toString())
         showToast("Connected to: ${bleDevice.name!!.trim()}")
         bleDevice.establishConnection(false)
             .subscribe({ rxBleConnection ->
@@ -121,37 +114,44 @@ class BleService : Service() {
                             pressButton()
                         }, onError())
                     }, onError())
-            }, onError())
+            }, reconnect())
     }
 
     private fun pressButton() {
-        i++
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (i==1){
-                Log.i(TAG, "Button Bluetooth Pressed!!!")
-                Handler(Looper.getMainLooper())
-                    .post { makeStatusNotification(
-                        "Simple Click", applicationContext, false) }
-            }else if (i==2){
-                Log.i(TAG, "Button Bluetooth twice")
-                Handler(Looper.getMainLooper())
-                    .post { makeStatusNotification(
-                        "CLICK SOS", applicationContext, true) }
-                sendLocation()
-            }
-            i = 0
-        }, 500)
+        val active = Paper.book().read<Boolean>("active")
+        if (active!!){
+            i++
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (i==1){
+                    Log.i(TAG, "Button Bluetooth Pressed!!!")
+                    Handler(Looper.getMainLooper())
+                        .post { makeStatusNotification(
+                            "Simple Click", applicationContext, false) }
+                }else if (i==2){
+                    Log.i(TAG, "Button Bluetooth twice")
+                    Handler(Looper.getMainLooper())
+                        .post { makeStatusNotification(
+                            "CLICK SOS", applicationContext, true) }
+                    sendLocation()
+                }
+                i = 0
+            }, 1000)
+        }
     }
 
     private fun sendLocation() {
-        val active = Paper.book().read<Boolean>("active")
+
         val latitude = Paper.book().read<Double>("latSos")
         val longitude = Paper.book().read<Double>("longSos")
         val macAddress = Paper.book().read<String>("macAddress")
         val identificador = Paper.book().read<String>("identificador")
+        val accuracy = Paper.book().read<String>("accuracy")
+        val speedMs = Paper.book().read<Float>("speed")
+        val altitude = Paper.book().read<Double>("altitude")
+        val speed = (speedMs!!*3.6)
         date = dateFormat.format(Date())
 
-        if (active!!){
+
             val result = mGpsViewModel.gpsLocationServer( UserInfo(
                 mensaje = "RegistraPosicion",
                 usuario = "rodrigotag",
@@ -161,11 +161,14 @@ class BleService : Service() {
                 contrasena = "1234",
                 codigo = "20",
                 fechahora = date,
-                identificador = identificador!!))
+                identificador = identificador!!,
+                satelites = accuracy!!.toInt(),
+                velocidad = speed,
+                altitud = altitude!!))
 
             Log.d(TAG, result.toString())
 
-        }
+
     }
 
     private fun reeScan(){
@@ -232,11 +235,13 @@ class BleService : Service() {
     }
 
     private fun onError(): (Throwable) -> Unit {
-        return { throwable -> throwable.message?.let { Log.e(TAG, it)
-            scanDevice()
-
+        return { throwable -> throwable.message?.let { Log.e("ERROR BLUETOOTH", it)
+            }
         }
-
+    }  private fun reconnect(): (Throwable) -> Unit {
+        return { throwable -> throwable.message?.let { Log.e(TAG, it) }
+            reeScan()
+            Paper.book().delete("macAddress")
         }
     }
 

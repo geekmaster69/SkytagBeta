@@ -8,7 +8,6 @@ import kotlinx.coroutines.withContext
 
 class UserService {
     private val retrofit = BaseRetrofit.getRetrofit()
-
     suspend fun updateUserInfo(userInfo: UserInfo) : UserInfoResponse {
         return withContext(Dispatchers.IO){
             val response = retrofit.create(UserApiClient::class.java).sendInfoSos(userInfo)

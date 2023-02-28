@@ -36,6 +36,16 @@
             android:backgroundTint="@color/blue"
             android:layout_weight="1"/>
 
+        <Button
+            android:id="@+id/btnDeleteAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/min_paddin_size"
+            android:text="@string/btn_delete_all"
+            app:cornerRadius="@dimen/common_padding_default"
+            android:backgroundTint="@color/blue"
+            android:layout_weight="1"/>
+
         <ImageView
             android:id="@+id/btnLogout"
             android:layout_width="32dp"
@@ -49,6 +59,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvStatus"
         app:layout_constraintTop_toBottomOf="@id/btnTop"
         app:layout_constraintBottom_toTopOf="@id/btnBottom"
         android:layout_width="match_parent"
