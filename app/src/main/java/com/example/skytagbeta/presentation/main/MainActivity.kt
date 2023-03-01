@@ -6,11 +6,17 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.skytagbeta.R
 import com.example.skytagbeta.base.utils.showToast
 import com.example.skytagbeta.databinding.ActivityMainBinding
 import com.example.skytagbeta.presentation.login.LoginActivity
@@ -21,6 +27,8 @@ import com.example.skytagbeta.presentation.main.utils.bluetoothStatus
 import com.example.skytagbeta.presentation.main.viewmodel.BleServiceViewModel
 import com.example.skytagbeta.presentation.main.worker.BlurViewModelFactory
 import com.example.skytagbeta.presentation.main.worker.WorkerViewModel
+import com.example.skytagbeta.presentation.recordinfragment.RecordingFragment
+import com.example.skytagbeta.presentation.recordinfragment.fragmentviewmodel.RecordFragmentViewModel
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -35,12 +43,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mAdapter: StatusListAdapter
     private lateinit var mLinearLayout: LinearLayoutManager
     private val mViewModel: BleServiceViewModel by viewModels()
+    private val recordFragmentViewModel: RecordFragmentViewModel by viewModels()
     private val mWorkerViewModel: WorkerViewModel by viewModels { BlurViewModelFactory(application) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
 
         mViewModel.getBinder().observe(this){ myBinder ->
@@ -51,8 +61,6 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "onChanged: unBound from service")
             }
         }
-
-        binding.btnLogout.setOnClickListener { logOut() }
 
         binding.btnAddBluetooth.setOnClickListener {
             if (!bluetoothStatus(this)) {
@@ -69,6 +77,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnDeleteAll.setOnClickListener{mViewModel.deleteAllStatus()}
     }
+
 
     private fun setupRecyclerView() {
 
@@ -88,21 +97,8 @@ class MainActivity : AppCompatActivity() {
                     layoutManager = mLinearLayout
                     adapter = mAdapter
                 }
-
             }
-
-
         }
-    }
-
-    private fun logOut() {
-        Paper.book().write("active", false)
-        mWorkerViewModel.cancelWork()
-        unbindService(mViewModel.getServiceConnection())
-        val  serviceIntent = Intent(this, BleService::class.java)
-        stopService(serviceIntent)
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish()
     }
 
     override fun onResume() {
@@ -142,5 +138,52 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId){
+            R.id.action_record ->{
+                launchRecordingFragment()
+            }
+
+            R.id.action_exit ->{
+                Paper.book().write("active", false)
+                mWorkerViewModel.cancelWork()
+                unbindService(mViewModel.getServiceConnection())
+                val  serviceIntent = Intent(this, BleService::class.java)
+                stopService(serviceIntent)
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun launchRecordingFragment() {
+
+        val fragment = RecordingFragment()
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        fragmentTransaction.add(R.id.containerMain, fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+
+        with(binding){
+            btnAddBluetooth
+            btnStop
+            btnStar
+            btnDeleteAll
+            btnRefresh
+
+        }.visibility = View.GONE
+
+
     }
 }

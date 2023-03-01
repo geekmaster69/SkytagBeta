@@ -126,12 +126,12 @@ class BleService : Service() {
                     Log.i(TAG, "Button Bluetooth Pressed!!!")
                     Handler(Looper.getMainLooper())
                         .post { makeStatusNotification(
-                            "Simple Click", applicationContext, false) }
+                            "Simple Click", applicationContext, 3) }
                 }else if (i==2){
                     Log.i(TAG, "Button Bluetooth twice")
                     Handler(Looper.getMainLooper())
                         .post { makeStatusNotification(
-                            "CLICK SOS", applicationContext, true) }
+                            "CLICK SOS", applicationContext, 20) }
                     sendLocation()
                 }
                 i = 0
@@ -158,7 +158,7 @@ class BleService : Service() {
                 latitud = latitude!!,
                 tagkey = macAddress!!,
                 contrasena = "1234",
-                codigo = "20",
+                codigo = Constants.PANIC_BUTTON,
                 fechahora = date,
                 identificador = identificador!!,
                 satelites = accuracy!!.toInt(),

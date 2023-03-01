@@ -18,7 +18,7 @@ import com.example.skytagbeta.base.Constants.VERBOSE_NOTIFICATION_CHANNEL_NAME
 private const val TAG = "Workutils"
 
 
-fun makeStatusNotification(message: String, context: Context, codding: Boolean){
+fun makeStatusNotification(message: String, context: Context, codding: Int){
 
     // Make a channel if necessary
     // Create the NotificationChannel, but only on API 26+ because
@@ -35,24 +35,39 @@ fun makeStatusNotification(message: String, context: Context, codding: Boolean){
 
     notificationManager?.createNotificationChannel(channel)
 
-    // Create the notification SOS o Mensaje normal
+    // Create the notification SOS, simple click, actualizacion u otro
 
     fun iconBuilder():NotificationCompat.Builder{
-        return if (codding) {
-            NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_emergency)
+        return when (codding) {
+            20 -> {NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_emergency)
+                    .setContentTitle(NOTIFICATION_TITLE)
+                    .setContentText(message)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setVibrate(LongArray(0)) }
+
+            3 -> {NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_click)
+                    .setContentTitle(NOTIFICATION_TITLE)
+                    .setContentText(message)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setVibrate(LongArray(0)) }
+
+            1 -> {NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_arrow_up)
                 .setContentTitle(NOTIFICATION_TITLE)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setVibrate(LongArray(0))
-        }else {
-            NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_click)
+                .setVibrate(LongArray(0)) }
+
+            else -> {NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground_1)
                 .setContentTitle(NOTIFICATION_TITLE)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setVibrate(LongArray(0))
+                .setVibrate(LongArray(0)) }
         }
+
     }
     // Show the notification
     NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, iconBuilder().build())

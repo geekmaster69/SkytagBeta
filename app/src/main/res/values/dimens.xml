@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="common_padding_default">16dp</dimen>
-    <dimen name="min_paddin_size">8dp</dimen>
+    <dimen name="min_padding_size">8dp</dimen>
+    <dimen name="max_min_padding_size">4dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 </resources>

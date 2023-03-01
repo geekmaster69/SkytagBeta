@@ -30,4 +30,6 @@ object Constants {
     const val TAG_OUTPUT = "OUTPUT"
 
     const val DELAY_TIME_MILLIS: Long = 3000
+    const val PANIC_BUTTON = "20"
+    const val UPDATE_LOCATION = "3"
 }

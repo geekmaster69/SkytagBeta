@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/common_padding_default"
+    android:id="@+id/containerMain"
     tools:context=".presentation.main.MainActivity">
 
     <LinearLayout
@@ -31,7 +32,7 @@
             android:id="@+id/btnRefresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/min_paddin_size"
+            android:layout_marginStart="@dimen/min_padding_size"
             android:text="@string/btn_refresh"
             app:cornerRadius="@dimen/common_padding_default"
             android:backgroundTint="@color/blue"
@@ -42,20 +43,10 @@
             android:src="@drawable/ic_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/min_paddin_size"
+            android:layout_marginStart="@dimen/min_padding_size"
             android:text="@string/btn_delete_all"
             app:cornerRadius="@dimen/common_padding_default"
             android:backgroundTint="@color/blue"
-            android:layout_weight="1"/>
-
-        <ImageView
-            android:id="@+id/btnLogout"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:text="@string/btn_logout"
-            android:src="@drawable/ic_logout"
-            android:backgroundTint="@color/blue"
-            android:layout_gravity="center"
             android:layout_weight="1"/>
 
     </LinearLayout>
@@ -97,7 +88,7 @@
             android:text="@string/btn_start_location"
             app:cornerRadius="@dimen/common_padding_default"
             android:layout_weight="1"
-            android:layout_marginStart="@dimen/min_paddin_size"
+            android:layout_marginStart="@dimen/min_padding_size"
             android:backgroundTint="@color/green" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

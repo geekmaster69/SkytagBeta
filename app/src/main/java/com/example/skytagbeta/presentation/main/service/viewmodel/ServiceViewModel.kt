@@ -16,7 +16,6 @@ class ServiceViewModel : ViewModel(){
 
     fun gpsLocationServer(userInfo: UserInfo){
         viewModelScope.launch {
-
             try {
                 val result = updateServiceLocation.updateUserInfo(userInfo)
                 gpsModel.postValue(result)
@@ -25,9 +24,6 @@ class ServiceViewModel : ViewModel(){
             } catch (e: Exception) {
                 Log.e(TAG, "$e")
             }
-
         }
     }
-
-
 }
