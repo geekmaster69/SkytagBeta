@@ -13,8 +13,8 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".base.db.StatusListApplication"
@@ -28,6 +28,13 @@
         android:theme="@style/Theme.SkytagBeta"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.recordactivity.RecordActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".presentation.login.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.SkytagBeta.NoActionBar">
@@ -36,6 +43,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -43,14 +51,11 @@
 
         <service
             android:name=".presentation.main.service.BleService"
-            android:foregroundServiceType="location">
-        </service>
+            android:foregroundServiceType="location"></service>
 
         <activity
             android:name=".presentation.main.MainActivity"
             android:exported="false">
-
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
