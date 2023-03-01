@@ -17,8 +17,8 @@ import java.util.*
 
 
 fun getBatteryPercentage(context: Context): Int {
-    val batteryStatus: Intent? = IntentFilter(Intent.ACTION_BATTERY_CHANGED).let { ifilter ->
-        context.registerReceiver(null, ifilter)
+    val batteryStatus: Intent? = IntentFilter(Intent.ACTION_BATTERY_CHANGED).let { iFilter ->
+        context.registerReceiver(null, iFilter)
     }
     val level = batteryStatus?.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) ?: -1
     val scale = batteryStatus?.getIntExtra(BatteryManager.EXTRA_SCALE, -1) ?: -1

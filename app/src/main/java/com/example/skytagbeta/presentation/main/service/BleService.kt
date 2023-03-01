@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.example.skytagbeta.R
 import com.example.skytagbeta.base.Constants
 import com.example.skytagbeta.base.utils.makeStatusNotification
+import com.example.skytagbeta.base.utils.showToast
 import com.example.skytagbeta.presentation.main.MainActivity
 import com.example.skytagbeta.presentation.main.gps.DefaultLocationClient
 import com.example.skytagbeta.presentation.main.gps.LocationClient
@@ -67,8 +68,6 @@ class BleService : Service() {
         locationClient = DefaultLocationClient(applicationContext, LocationServices
             .getFusedLocationProviderClient(applicationContext))
 
-
-
         //Fecha
         dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
     }
@@ -95,7 +94,7 @@ class BleService : Service() {
     }
 
     fun scanDevice(){
-        showToast("Scanned...")
+        showToast(applicationContext,"Scanned...")
         rxBleClient.scanBleDevices(scanSettings(), scanFilter())
             .firstElement()
             .subscribe({ scanResult ->
@@ -105,7 +104,8 @@ class BleService : Service() {
 
     private fun stablesConnection(bleDevice: RxBleDevice) {
         Paper.book().write("macAddress", bleDevice.macAddress.toString())
-        showToast("Connected to: ${bleDevice.name!!.trim()}")
+
+        showToast(applicationContext,"Connected to: ${bleDevice.name!!.trim()}")
         bleDevice.establishConnection(false)
             .subscribe({ rxBleConnection ->
                 rxBleConnection.setupIndication(characteristicUUID, NotificationSetupMode.COMPAT)
@@ -151,7 +151,6 @@ class BleService : Service() {
         val speed = (speedMs!!*3.6)
         date = dateFormat.format(Date())
 
-
             val result = mGpsViewModel.gpsLocationServer( UserInfo(
                 mensaje = "RegistraPosicion",
                 usuario = "rodrigotag",
@@ -167,8 +166,6 @@ class BleService : Service() {
                 altitud = altitude!!))
 
             Log.d(TAG, result.toString())
-
-
     }
 
     private fun reeScan(){
@@ -238,16 +235,12 @@ class BleService : Service() {
         return { throwable -> throwable.message?.let { Log.e("ERROR BLUETOOTH", it)
             }
         }
-    }  private fun reconnect(): (Throwable) -> Unit {
+    }
+
+    private fun reconnect(): (Throwable) -> Unit {
         return { throwable -> throwable.message?.let { Log.e(TAG, it) }
             reeScan()
             Paper.book().delete("macAddress")
-        }
-    }
-
-    private fun showToast(message: String){
-        Handler(Looper.getMainLooper())
-            .post { Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
         }
     }
 

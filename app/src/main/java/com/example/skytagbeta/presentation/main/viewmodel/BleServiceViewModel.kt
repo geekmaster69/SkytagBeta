@@ -48,6 +48,12 @@ class BleServiceViewModel: ViewModel() {
         }
     }
 
+    fun deleteAllStatus(){
+        viewModelScope.launch {
+            val statusList = StatusListApplication.database.statusDao().deleteAllStatus()
+        }
+    }
+
 
 
 

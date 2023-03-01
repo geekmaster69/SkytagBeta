@@ -15,18 +15,19 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
+        <ImageButton
+            android:src="@drawable/ic_bluetooth"
             android:id="@+id/btnAddBluetooth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/btn_connect_ble"
             android:backgroundTint="@color/blue"
             android:layout_weight="1"
-            app:cornerRadius="@dimen/common_padding_default"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <Button
+        <ImageButton
+            android:src="@drawable/ic_refresh"
             android:id="@+id/btnRefresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,8 +37,9 @@
             android:backgroundTint="@color/blue"
             android:layout_weight="1"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/btnDeleteAll"
+            android:src="@drawable/ic_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/min_paddin_size"

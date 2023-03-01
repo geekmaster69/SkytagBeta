@@ -31,13 +31,13 @@ class UpdateLocationWorker(ctx: Context, params: WorkerParameters): CoroutineWor
         val speedMs = Paper.book().read<Float>("speed")
         val speed = (speedMs!!*3.6)
         val battery = getBatteryPercentage(applicationContext).toString()
-        val gpsStatus = getGpsStatus(applicationContext).toString()
-        val networkStatus = networkStatus(applicationContext).toString()
-        val bleStatus = bluetoothStatus(applicationContext).toString()
+        val gpsStatus = if (getGpsStatus(applicationContext)) "ON" else  "OFF"
+        val networkStatus = if (networkStatus(applicationContext)) "ON" else  "OFF"
+        val bleStatus = if (bluetoothStatus(applicationContext)) "ON" else  "OFF"
         val date = getDate()
 
         return try {
-            val result = mGpsViewModel.gpsLocationServer( UserInfo(
+     /*       val result = mGpsViewModel.gpsLocationServer( UserInfo(
                 mensaje = "RegistraPosicion",
                 usuario = "rodrigotag",
                 longitud = longitude!!,
@@ -50,7 +50,7 @@ class UpdateLocationWorker(ctx: Context, params: WorkerParameters): CoroutineWor
                 satelites = accuracy!!.toInt(),
                 velocidad = speed,
                 altitud = altitude!!))
-
+*/
             StatusListApplication.database.statusDao().addStatus(StatusListEntity(
                 lat = latitude!!,
                 lng = longitude!!,
@@ -58,11 +58,11 @@ class UpdateLocationWorker(ctx: Context, params: WorkerParameters): CoroutineWor
                 battery = "$battery%",
                 gps = gpsStatus,
                 network = networkStatus,
-                ble = "$bleStatus$macAddress",
+                ble = "$bleStatus $macAddress",
                 date = date
             ))
 
-            Log.d(TAG, "$result")
+      //      Log.d(TAG, "$result")
 
             Result.success()
         } catch (e: Exception) {

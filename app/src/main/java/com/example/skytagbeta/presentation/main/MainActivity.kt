@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         mViewModel.getBinder().observe(this){ myBinder ->
             if (myBinder != null){
                 Log.d(TAG, "onChanged: connected to service")
@@ -51,9 +52,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnLogout.setOnClickListener {
-            logOut()
-        }
+        binding.btnLogout.setOnClickListener { logOut() }
 
         binding.btnAddBluetooth.setOnClickListener {
             if (!bluetoothStatus(this)) {
@@ -62,30 +61,37 @@ class MainActivity : AppCompatActivity() {
             }else{ mService.scanDevice() }
         }
 
-        binding.btnStop.setOnClickListener {
-            mWorkerViewModel.cancelWork()
-        }
+        binding.btnStop.setOnClickListener { mWorkerViewModel.cancelWork() }
 
-        binding.btnStar.setOnClickListener {
-            mWorkerViewModel.updateLocation()
-        }
-        binding.btnRefresh.setOnClickListener {
-            setupRecyclerView()
+        binding.btnStar.setOnClickListener { mWorkerViewModel.updateLocation() }
 
-        }
+        binding.btnRefresh.setOnClickListener { setupRecyclerView() }
+
+        binding.btnDeleteAll.setOnClickListener{mViewModel.deleteAllStatus()}
     }
 
     private fun setupRecyclerView() {
 
         mViewModel.getStatusList()
         mViewModel.statusInfo.observe(this){statusList ->
+            if (statusList.isEmpty()){
+                mAdapter = StatusListAdapter(mutableListOf())
+                mLinearLayout = LinearLayoutManager(this)
+                binding.rvStatus.apply {
+                    layoutManager = mLinearLayout
+                    adapter = mAdapter
+                }
+            }else{
+                mAdapter = StatusListAdapter(statusList.reversed() as MutableList<StatusListEntity>)
+                mLinearLayout = LinearLayoutManager(this)
+                binding.rvStatus.apply {
+                    layoutManager = mLinearLayout
+                    adapter = mAdapter
+                }
 
-            mAdapter = StatusListAdapter(statusList.reversed() as MutableList<StatusListEntity>)
-            mLinearLayout = LinearLayoutManager(this)
-            binding.rvStatus.apply {
-                layoutManager = mLinearLayout
-                adapter = mAdapter
             }
+
+
         }
     }
 

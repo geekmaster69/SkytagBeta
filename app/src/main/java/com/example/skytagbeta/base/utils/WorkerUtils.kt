@@ -60,8 +60,7 @@ fun makeStatusNotification(message: String, context: Context, codding: Boolean){
 
  fun showToast(ctx: Context, message: String){
     Handler(Looper.getMainLooper())
-        .post { Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show()
-        }
+        .post { Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show() }
 }
 
 
