@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="@dimen/min_padding_size"
-    tools:context=".presentation.recordactivity.RecordActivity">
+    tools:context=".presentation.locationhistory.LocationHistory">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvStatus"

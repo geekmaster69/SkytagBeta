@@ -1,6 +1,8 @@
 package com.example.skytagbeta.presentation.main.worker
 
 import android.app.Application
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.work.*
@@ -9,11 +11,20 @@ import java.util.concurrent.TimeUnit
 class WorkerViewModel(application: Application): ViewModel() {
 
     private val workManager = WorkManager.getInstance(application)
+    private var statusWorker = MutableLiveData<Boolean>()
+
+
 
 
     fun cancelWork(){
         workManager.cancelAllWork()
+        statusWorker.postValue(false)
     }
+
+    fun getStatusWorker(): LiveData<Boolean>{
+        return statusWorker
+    }
+
 
     fun updateLocation(){
         val constrains = Constraints.Builder()
@@ -31,6 +42,7 @@ class WorkerViewModel(application: Application): ViewModel() {
             "updateLocation",
             ExistingPeriodicWorkPolicy.KEEP,
             updateLocation )
+        statusWorker.postValue(true)
     }
 }
 class BlurViewModelFactory(private val application: Application) : ViewModelProvider.Factory {

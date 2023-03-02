@@ -5,12 +5,12 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.activity.viewModels
 import com.example.skytagbeta.R
 import com.example.skytagbeta.databinding.ActivityMainBinding
@@ -20,7 +20,7 @@ import com.example.skytagbeta.presentation.main.utils.bluetoothStatus
 import com.example.skytagbeta.presentation.main.viewmodel.BleServiceViewModel
 import com.example.skytagbeta.presentation.main.worker.BlurViewModelFactory
 import com.example.skytagbeta.presentation.main.worker.WorkerViewModel
-import com.example.skytagbeta.presentation.recordactivity.RecordActivity
+import com.example.skytagbeta.presentation.locationhistory.LocationHistory
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -35,13 +35,12 @@ class MainActivity : AppCompatActivity() {
     private val mViewModel: BleServiceViewModel by viewModels()
     private val mWorkerViewModel: WorkerViewModel by viewModels { BlurViewModelFactory(application) }
 
+    var isActive = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
-
 
         mViewModel.getBinder().observe(this){ myBinder ->
             if (myBinder != null){
@@ -54,15 +53,26 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnAddBluetooth.setOnClickListener { mService.scanDevice() }
 
-        binding.btnStop.setOnClickListener { mWorkerViewModel.cancelWork() }
 
-        binding.btnStar.setOnClickListener { mWorkerViewModel.updateLocation() }
+        binding.btnStar.setOnClickListener {
 
+                 if (isActive){
+                     mWorkerViewModel.cancelWork()
+                     binding.btnStar.text = "Transmitir"
+                     binding.btnStar.setBackgroundColor(Color.GREEN)
+                     Log.d(TAG, "true")
+                     isActive = false
+                 }else{
+                     mWorkerViewModel.updateLocation()
+                     binding.btnStar.text = "Detener"
+                     binding.btnStar.setBackgroundColor(Color.RED)
+                     Log.d(TAG, "false")
+                     isActive = true
+                 }
 
-        binding.btnDeleteAll.setOnClickListener{mViewModel.deleteAllStatus()}
+            }
+
     }
-
-
 
     override fun onResume() {
         super.onResume()
@@ -112,7 +122,7 @@ class MainActivity : AppCompatActivity() {
 
         when (item.itemId){
             R.id.action_record ->{
-                startActivity(Intent(this, RecordActivity::class.java))
+                startActivity(Intent(this, LocationHistory::class.java))
             }
             R.id.action_exit ->{
                 logout()

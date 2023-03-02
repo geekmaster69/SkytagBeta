@@ -1,13 +1,12 @@
-package com.example.skytagbeta.presentation.recordactivity
+package com.example.skytagbeta.presentation.locationhistory
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
-import android.window.OnBackInvokedCallback
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.skytagbeta.R
 import com.example.skytagbeta.databinding.ActivityRecordBinding
@@ -15,7 +14,7 @@ import com.example.skytagbeta.presentation.main.adapter.StatusListAdapter
 import com.example.skytagbeta.presentation.main.model.entity.StatusListEntity
 import com.example.skytagbeta.presentation.main.viewmodel.BleServiceViewModel
 
-class RecordActivity : AppCompatActivity() {
+class LocationHistory : AppCompatActivity() {
     private lateinit var binding: ActivityRecordBinding
     private val mViewModel: BleServiceViewModel by viewModels()
     private lateinit var mAdapter: StatusListAdapter
@@ -26,8 +25,6 @@ class RecordActivity : AppCompatActivity() {
         binding = ActivityRecordBinding.inflate(layoutInflater)
         setContentView(binding.root)
         this.supportActionBar?.title = getString(R.string.location_history)
-
-
 
         setupRecyclerView()
     }
@@ -54,24 +51,20 @@ class RecordActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_location_history, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when(item.itemId){
-            io.paperdb.R.id.home ->{
-                onBackPressedDispatcher.addCallback(this, onBackInvokedCallback)
-
-
+            R.id.action_deletet ->{
+                mViewModel.deleteAllStatus()
+                setupRecyclerView()
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-    @SuppressLint("NewApi")
-    private val onBackInvokedCallback = object : OnBackPressedCallback(true){
-        override fun handleOnBackPressed() {
-
-        }
-
-
     }
 
 }
