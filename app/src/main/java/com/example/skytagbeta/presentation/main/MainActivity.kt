@@ -35,8 +35,6 @@ class MainActivity : AppCompatActivity() {
     private val mViewModel: BleServiceViewModel by viewModels()
     private val mWorkerViewModel: WorkerViewModel by viewModels { BlurViewModelFactory(application) }
 
-    var isActive = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -55,19 +53,20 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.btnStar.setOnClickListener {
+            val isActive = Paper.book().read<Boolean>("isActiveWorker") ?: false
 
                  if (isActive){
                      mWorkerViewModel.cancelWork()
                      binding.btnStar.text = "Transmitir"
                      binding.btnStar.setBackgroundColor(Color.GREEN)
-                     Log.d(TAG, "true")
-                     isActive = false
+                     Paper.book().write("isActiveWorker", false)
+
                  }else{
                      mWorkerViewModel.updateLocation()
                      binding.btnStar.text = "Detener"
                      binding.btnStar.setBackgroundColor(Color.RED)
-                     Log.d(TAG, "false")
-                     isActive = true
+                     Paper.book().write("isActiveWorker", true)
+
                  }
 
             }
