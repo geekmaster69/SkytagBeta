@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.skytagbeta.R
 import com.example.skytagbeta.base.utils.showToast
@@ -23,10 +24,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class LocationHistory : AppCompatActivity(), OnClickListener {
     private lateinit var binding: ActivityRecordBinding
-    private lateinit var map: GoogleMap
     private val mViewModel: BleServiceViewModel by viewModels()
     private lateinit var mAdapter: StatusListAdapter
     private lateinit var mLinearLayout: LinearLayoutManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +62,7 @@ class LocationHistory : AppCompatActivity(), OnClickListener {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_location_history, menu)
-        return super.onCreateOptionsMenu(menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -76,7 +77,6 @@ class LocationHistory : AppCompatActivity(), OnClickListener {
     }
 
     override fun onClick(statusListEntity: StatusListEntity) {
-
         val args = Bundle()
         args.putSerializable("status", statusListEntity)
         intent.putExtra("Bundle", args)
@@ -93,9 +93,5 @@ class LocationHistory : AppCompatActivity(), OnClickListener {
         fragmentTransaction.add(R.id.locationHistory, fragment)
         fragmentTransaction.commit()
 
-
     }
-
-
-
 }

@@ -3,10 +3,10 @@ package com.example.skytagbeta.presentation.mapFragment
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.*
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.example.skytagbeta.R
 import com.example.skytagbeta.base.utils.showToast
 import com.example.skytagbeta.databinding.FragmentMapBinding
@@ -37,9 +37,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         val args = activity?.intent?.getBundleExtra("Bundle")
         val status = args?.getSerializable("status") as StatusListEntity
 
+        setHasOptionsMenu(true)
+
         lat = status.lat
         lng = status.lng
-
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.frg) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -61,5 +62,34 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.map_options, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId){
+        R.id.normal_map -> {
+            map.mapType = GoogleMap.MAP_TYPE_NORMAL
+            true
+        }
+        R.id.hybrid_map -> {
+            map.mapType = GoogleMap.MAP_TYPE_HYBRID
+            true
+        }
+        R.id.satellite_map -> {
+            map.mapType = GoogleMap.MAP_TYPE_SATELLITE
+            true
+        }
+        R.id.terrain_map -> {
+            map.mapType = GoogleMap.MAP_TYPE_TERRAIN
+            true
+        }
+        else -> false
+    }
+
+    override fun onDestroy() {
+        setHasOptionsMenu(false)
+        super.onDestroy()
+    }
 
 }
