@@ -78,15 +78,14 @@ class LocationHistory : AppCompatActivity(), OnClickListener {
     override fun onClick(statusListEntity: StatusListEntity) {
 
         val args = Bundle()
-        args.putLong("args_id", statusListEntity.id)
-        launchMapFragment(args)
-
+        args.putSerializable("status", statusListEntity)
+        intent.putExtra("Bundle", args)
+        launchMapFragment()
 
     }
 
-    private fun launchMapFragment(args: Bundle? = null) {
+    private fun launchMapFragment() {
         val fragment = MapFragment()
-        if (args != null)fragment.arguments = args
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.addToBackStack(null)

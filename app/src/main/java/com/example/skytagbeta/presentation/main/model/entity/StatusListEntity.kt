@@ -2,6 +2,7 @@ package com.example.skytagbeta.presentation.main.model.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "StatusEntity")
 data class StatusListEntity(
@@ -14,4 +15,4 @@ data class StatusListEntity(
     var battery: String = "",
     var ble: String = "",
     var network: String = ""
-)
+): Serializable

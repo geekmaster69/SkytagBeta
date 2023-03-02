@@ -12,6 +12,9 @@ interface StatusListDao {
     @Insert
     suspend fun addStatus(statusListEntity: StatusListEntity)
 
+    @Query("SELECT * FROM StatusEntity where id = :id")
+    fun getStatusById(id: Long): StatusListEntity
+
     @Update
     suspend fun updateStatus(statusListEntity: StatusListEntity)
 
