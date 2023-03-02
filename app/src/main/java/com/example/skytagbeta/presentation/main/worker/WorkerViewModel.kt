@@ -21,12 +21,9 @@ class WorkerViewModel(application: Application): ViewModel() {
         statusWorker.postValue(false)
     }
 
-    fun getStatusWorker(): LiveData<Boolean>{
-        return statusWorker
-    }
 
 
-    fun updateLocation(){
+    fun updateLocation(time: Long){
         val constrains = Constraints.Builder()
             .build()
 

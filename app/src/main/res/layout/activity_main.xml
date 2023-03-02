@@ -19,7 +19,7 @@
         <ImageButton
             android:src="@drawable/ic_bluetooth"
             android:id="@+id/btnAddBluetooth"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/btn_connect_ble"
             android:backgroundTint="@color/blue"
@@ -29,23 +29,31 @@
 
     </LinearLayout>
 
-
-    <LinearLayout
-        android:id="@+id/btnBottom"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/btnStar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="horizontal">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/btn_start_location"
+        app:cornerRadius="@dimen/common_padding_default"
+        android:backgroundTint="@color/green"/>
+
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/btn_stop_location"
+        app:cornerRadius="@dimen/common_padding_default"
+        android:visibility="gone"
+        android:backgroundTint="@color/red"/>
 
 
-        <Button
-            android:id="@+id/btnStar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_start_location"
-            app:cornerRadius="@dimen/common_padding_default"
-            android:layout_weight="1"
-            android:layout_marginStart="@dimen/min_padding_size"
-            android:backgroundTint="@color/green" />
-    </LinearLayout>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

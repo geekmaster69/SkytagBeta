@@ -3,20 +3,15 @@ package com.example.skytagbeta.presentation.main.worker
 import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
-import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.skytagbeta.base.Constants
 import com.example.skytagbeta.base.db.StatusListApplication
 import com.example.skytagbeta.base.utils.makeStatusNotification
-import com.example.skytagbeta.base.utils.showToast
-import com.example.skytagbeta.presentation.main.adapter.StatusListAdapter
 import com.example.skytagbeta.presentation.main.model.entity.StatusListEntity
 import com.example.skytagbeta.presentation.main.service.model.UserInfo
 import com.example.skytagbeta.presentation.main.service.viewmodel.ServiceViewModel
 import com.example.skytagbeta.presentation.main.utils.*
 import io.paperdb.Paper
-import java.text.SimpleDateFormat
-import java.util.*
 
 private const val TAG = "UpdateLocationWorker"
 class UpdateLocationWorker(ctx: Context, params: WorkerParameters): CoroutineWorker(ctx, params) {

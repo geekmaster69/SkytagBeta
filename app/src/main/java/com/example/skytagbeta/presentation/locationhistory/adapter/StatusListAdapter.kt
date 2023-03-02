@@ -1,15 +1,17 @@
-package com.example.skytagbeta.presentation.main.adapter
+package com.example.skytagbeta.presentation.locationhistory.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.skytagbeta.R
 import com.example.skytagbeta.databinding.ItemStatusListBinding
+import com.example.skytagbeta.presentation.locationhistory.inter.OnClickListener
 import com.example.skytagbeta.presentation.main.model.entity.StatusListEntity
 
-class StatusListAdapter(private var status: MutableList<StatusListEntity>) : RecyclerView.Adapter<StatusListAdapter.ViewHolder>() {
+class StatusListAdapter(private var status: MutableList<StatusListEntity>, private var listener: OnClickListener) : RecyclerView.Adapter<StatusListAdapter.ViewHolder>() {
 
     private lateinit var mContext: Context
 
@@ -24,6 +26,7 @@ class StatusListAdapter(private var status: MutableList<StatusListEntity>) : Rec
         val list = status[position]
 
         with(holder){
+            setListener(list)
             binding.tvBaterry.text = list.battery
             binding.tvLat.text = list.lat.toString()
             binding.tvLng.text = list.lng.toString()
@@ -33,7 +36,6 @@ class StatusListAdapter(private var status: MutableList<StatusListEntity>) : Rec
             binding.tvTime.text = list.date
             binding.tvSatelite.text = list.accuracy
         }
-
     }
 
     override fun getItemCount(): Int = status.size
@@ -42,6 +44,10 @@ class StatusListAdapter(private var status: MutableList<StatusListEntity>) : Rec
 
         val binding = ItemStatusListBinding.bind(view)
 
-
+        fun setListener(statusListEntity: StatusListEntity){
+            binding.root.setOnClickListener {
+                listener.onClick(statusListEntity)
+            }
+        }
     }
 }

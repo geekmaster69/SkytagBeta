@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import com.example.skytagbeta.R
 import com.example.skytagbeta.databinding.ActivityMainBinding
@@ -28,7 +29,7 @@ import com.google.android.gms.location.LocationSettingsRequest
 import io.paperdb.Paper
 private const val TAG = "MainActivity"
 @SuppressLint("MissingPermission")
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var mService: BleService
@@ -53,33 +54,41 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.btnStar.setOnClickListener {
-            val isActive = Paper.book().read<Boolean>("isActiveWorker") ?: false
+            val time = Paper.book().read<Long>("workerTime") ?: 15
+            mWorkerViewModel.updateLocation(time)
+            Paper.book().write("isActiveWorker", true)
+            binding.btnStar.visibility = View.GONE
+            binding.btnStop.visibility = View.VISIBLE
+        }
 
-                 if (isActive){
-                     mWorkerViewModel.cancelWork()
-                     binding.btnStar.text = "Transmitir"
-                     binding.btnStar.setBackgroundColor(Color.GREEN)
-                     Paper.book().write("isActiveWorker", false)
-
-                 }else{
-                     mWorkerViewModel.updateLocation()
-                     binding.btnStar.text = "Detener"
-                     binding.btnStar.setBackgroundColor(Color.RED)
-                     Paper.book().write("isActiveWorker", true)
-
-                 }
-
-            }
-
+        binding.btnStop.setOnClickListener {
+            mWorkerViewModel.cancelWork()
+            Paper.book().write("isActiveWorker", false)
+            binding.btnStop.visibility = View.GONE
+            binding.btnStar.visibility = View.VISIBLE
+        }
     }
 
     override fun onResume() {
         super.onResume()
         starBleService()
+        checkButton()
         checkDeviceLocationSettingsAndStartGeofence()
         if (!bluetoothStatus(this)) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(enableBtIntent, 1)
+        }
+    }
+
+    private fun checkButton() {
+        val isActive = Paper.book().read<Boolean>("isActiveWorker") ?: false
+
+        if (isActive){
+            binding.btnStar.visibility = View.GONE
+            binding.btnStop.visibility = View.VISIBLE
+        }else{
+            binding.btnStop.visibility = View.GONE
+            binding.btnStar.visibility = View.VISIBLE
         }
     }
 
@@ -133,6 +142,7 @@ class MainActivity : AppCompatActivity() {
     private fun logout() {
         Paper.book().write("active", false)
         mWorkerViewModel.cancelWork()
+        Paper.book().write("isActiveWorker", false)
         unbindService(mViewModel.getServiceConnection())
         val  serviceIntent = Intent(this, BleService::class.java)
         stopService(serviceIntent)
