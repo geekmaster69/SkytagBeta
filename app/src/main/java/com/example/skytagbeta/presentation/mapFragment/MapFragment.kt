@@ -46,7 +46,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         lng = status.lng
         date = status.date
 
-
         val mapFragment = childFragmentManager.findFragmentById(R.id.frg) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
@@ -66,8 +65,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         val snippet = String.format(
             Locale.getDefault(),
-            "Date: $date"
-        )
+            "Date: $date")
 
         val coordinates = LatLng(lat, lng)
         val marker = MarkerOptions()
