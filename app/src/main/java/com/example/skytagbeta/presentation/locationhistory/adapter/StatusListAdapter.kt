@@ -28,8 +28,7 @@ class StatusListAdapter(private var status: MutableList<StatusListEntity>, priva
         with(holder){
             setListener(list)
             binding.tvBaterry.text = list.battery
-            binding.tvLat.text = list.lat.toString()
-            binding.tvLng.text = list.lng.toString()
+            binding.tvID.text = list.id.toString()
             binding.tvBluetooth.text = list.ble
             binding.tvGps.text = list.gps
             binding.tvNetwork.text = list.network

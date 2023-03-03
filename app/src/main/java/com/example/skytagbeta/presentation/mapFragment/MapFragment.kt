@@ -1,5 +1,6 @@
 package com.example.skytagbeta.presentation.mapFragment
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +19,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.util.*
 
 
 class MapFragment : Fragment(), OnMapReadyCallback {
@@ -25,6 +27,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private var lat: Double = 0.0
     private var lng: Double = 0.0
+    private var date: String = ""
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentMapBinding.inflate(inflater, container, false)
         return binding.root
@@ -41,24 +44,39 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         lat = status.lat
         lng = status.lng
+        date = status.date
+
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.frg) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(googlemap: GoogleMap) {
         map = googlemap
         map.clear()
         addMarker()
 
+        map.isMyLocationEnabled = true
+
     }
 
     private fun addMarker() {
+
+        val snippet = String.format(
+            Locale.getDefault(),
+            "Date: $date"
+        )
+
         val coordinates = LatLng(lat, lng)
-        val marker = MarkerOptions().position(coordinates).title("Me")
+        val marker = MarkerOptions()
+            .position(coordinates)
+            .title("My Location")
+            .snippet(snippet)
+
         map.addMarker(marker)
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 14f), 2000, null)
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15f))
 
     }
 

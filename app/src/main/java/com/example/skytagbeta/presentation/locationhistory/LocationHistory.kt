@@ -42,6 +42,7 @@ class LocationHistory : AppCompatActivity(), OnClickListener {
 
         mViewModel.getStatusList()
         mViewModel.statusInfo.observe(this){statusList ->
+
             if (statusList.isEmpty()){
                 mAdapter = StatusListAdapter(mutableListOf(), this)
                 mLinearLayout = LinearLayoutManager(this)
@@ -50,7 +51,7 @@ class LocationHistory : AppCompatActivity(), OnClickListener {
                     adapter = mAdapter
                 }
             }else{
-                mAdapter = StatusListAdapter(statusList.reversed() as MutableList<StatusListEntity>, this)
+                mAdapter = StatusListAdapter(statusList.reversed()/*.filter { it.date > ("1") && it.date < ("10")  }*/ as MutableList<StatusListEntity>, this)
                 mLinearLayout = LinearLayoutManager(this)
                 binding.rvStatus.apply {
                     layoutManager = mLinearLayout
