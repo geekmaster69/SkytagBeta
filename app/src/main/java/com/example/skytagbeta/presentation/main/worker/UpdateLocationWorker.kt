@@ -11,6 +11,7 @@ import com.example.skytagbeta.presentation.main.model.entity.StatusListEntity
 import com.example.skytagbeta.presentation.main.service.model.UserInfo
 import com.example.skytagbeta.presentation.main.service.viewmodel.ServiceViewModel
 import com.example.skytagbeta.presentation.main.utils.*
+import com.google.gson.JsonObject
 import io.paperdb.Paper
 
 private const val TAG = "UpdateLocationWorker"
@@ -20,8 +21,8 @@ class UpdateLocationWorker(ctx: Context, params: WorkerParameters): CoroutineWor
 
         val mGpsViewModel = ServiceViewModel()
         Paper.init(applicationContext)
-        val latitude = Paper.book().read<Double>("latSos")
-        val longitude = Paper.book().read<Double>("longSos")
+        val latitude = Paper.book().read<Double>("latSos")?: 0.0
+        val longitude = Paper.book().read<Double>("longSos") ?: 0.0
         val macAddress = Paper.book().read<String>("macAddress") ?: "offline"
         val identificador = Paper.book().read<String>("identificador")
         val accuracy = Paper.book().read<String>("accuracy")
@@ -29,25 +30,32 @@ class UpdateLocationWorker(ctx: Context, params: WorkerParameters): CoroutineWor
         val speedMs = Paper.book().read<Float>("speed")
         val speed = (speedMs!!*3.6)
         val battery = getBatteryPercentage(applicationContext).toString()
-        val gpsStatus = if (getGpsStatus(applicationContext)) "ON" else  "OFF"
-        val networkStatus = if (networkStatus(applicationContext)) "ON" else  "OFF"
-        val bleStatus = if (bluetoothStatus(applicationContext)) "ON" else  "OFF"
+        val gpsStatus =  (getGpsStatus(applicationContext))
+        val networkStatus =  (networkStatus(applicationContext))
+        val bleStatus =  bluetoothStatus(applicationContext)
         val date = getDate()
+        val jsonObject= JsonObject()
+        jsonObject.addProperty("internet", networkStatus(applicationContext))
+        jsonObject.addProperty("gps", getGpsStatus(applicationContext))
+        jsonObject.addProperty("bluetootn", bluetoothStatus(applicationContext))
 
         return try {
             val result = mGpsViewModel.gpsLocationServer( UserInfo(
                 mensaje = "RegistraPosicion",
                 usuario = "rodrigotag",
-                longitud = longitude!!,
-                latitud = latitude!!,
-                tagkey = macAddress!!,
+                longitud = longitude,
+                latitud = latitude,
+                tagkey = macAddress,
                 contrasena = "1234",
                 codigo = Constants.UPDATE_LOCATION,
                 fechahora = date,
                 identificador = identificador!!,
                 satelites = accuracy!!.toInt(),
                 velocidad = speed,
-                altitud = altitude!!))
+                altitud = altitude!!,
+                bateria = battery.toDouble(),
+            ))
+
             Log.d(TAG, "$result")
 
             Result.success()
@@ -55,12 +63,12 @@ class UpdateLocationWorker(ctx: Context, params: WorkerParameters): CoroutineWor
             Result.failure()
         } finally {
             StatusListApplication.database.statusDao().addStatus(StatusListEntity(
-                lat = latitude!!,
-                lng = longitude!!,
+                lat = latitude,
+                lng = longitude,
                 accuracy = accuracy!!,
                 battery = "$battery%",
-                gps = gpsStatus,
-                network = networkStatus,
+                gps = gpsStatus.toString(),
+                network = networkStatus.toString(),
                 ble = "$bleStatus $macAddress",
                 date = date))
         }

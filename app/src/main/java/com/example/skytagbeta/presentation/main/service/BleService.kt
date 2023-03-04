@@ -1,12 +1,9 @@
 package com.example.skytagbeta.presentation.main.service
 
 import android.app.*
-import android.content.Context
 import android.content.Intent
-import android.location.LocationManager
 import android.os.*
 import android.util.Log
-import android.widget.Toast
 import com.example.skytagbeta.R
 import com.example.skytagbeta.base.Constants
 import com.example.skytagbeta.base.utils.makeStatusNotification
@@ -16,8 +13,9 @@ import com.example.skytagbeta.presentation.main.gps.DefaultLocationClient
 import com.example.skytagbeta.presentation.main.gps.LocationClient
 import com.example.skytagbeta.presentation.main.service.model.UserInfo
 import com.example.skytagbeta.presentation.main.service.viewmodel.ServiceViewModel
-import com.example.skytagbeta.presentation.main.utils.vibratePhone
+import com.example.skytagbeta.presentation.main.utils.*
 import com.google.android.gms.location.LocationServices
+import com.google.gson.JsonObject
 import com.polidea.rxandroidble3.NotificationSetupMode
 import com.polidea.rxandroidble3.RxBleClient
 import com.polidea.rxandroidble3.RxBleDevice
@@ -141,29 +139,41 @@ class BleService : Service() {
 
     private fun sendLocation() {
 
-        val latitude = Paper.book().read<Double>("latSos")
-        val longitude = Paper.book().read<Double>("longSos")
-        val macAddress = Paper.book().read<String>("macAddress")
+        val latitude = Paper.book().read<Double>("latSos") ?: 0.0
+        val longitude = Paper.book().read<Double>("longSos") ?: 0.0
+        val macAddress = Paper.book().read<String>("macAddress") ?: "offline"
         val identificador = Paper.book().read<String>("identificador")
         val accuracy = Paper.book().read<String>("accuracy")
         val speedMs = Paper.book().read<Float>("speed")
         val altitude = Paper.book().read<Double>("altitude")
+        val battery = getBatteryPercentage(applicationContext).toString()
         val speed = (speedMs!!*3.6)
+        val jsonObject= JsonObject()
+        val list  = mutableListOf<String>()
+        list.add("dfsdfsdf")
+        list.add("aaaaaaaa")
+
+
+
         date = dateFormat.format(Date())
+
+
 
             val result = mGpsViewModel.gpsLocationServer( UserInfo(
                 mensaje = "RegistraPosicion",
                 usuario = "rodrigotag",
-                longitud = longitude!!,
-                latitud = latitude!!,
-                tagkey = macAddress!!,
+                longitud = longitude,
+                latitud = latitude,
+                tagkey = macAddress,
                 contrasena = "1234",
                 codigo = Constants.PANIC_BUTTON,
                 fechahora = date,
                 identificador = identificador!!,
                 satelites = accuracy!!.toInt(),
                 velocidad = speed,
-                altitud = altitude!!))
+                altitud = altitude!!,
+                bateria = battery.toDouble()
+              ))
 
             Log.d(TAG, result.toString())
     }

@@ -9,10 +9,31 @@
     tools:context=".presentation.locationhistory.LocationHistory"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+   <EditText
+       android:id="@+id/etDate1"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintEnd_toStartOf="@id/etDate2"
+       android:layout_marginEnd="@dimen/min_padding_size"
+       android:layout_width="0dp"
+       android:hint="Fecha Inicial"
+       android:layout_height="wrap_content"/>
+   <EditText
+       android:id="@+id/etDate2"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toEndOf="@id/etDate1"
+       android:layout_marginStart="@dimen/min_padding_size"
+       android:hint="Fecha Final"
+       android:layout_width="0dp"
+       android:layout_height="wrap_content"/>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:padding="@dimen/min_padding_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etDate1"
+
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/rvStatus"
         android:layout_width="match_parent"
