@@ -123,12 +123,10 @@ class BleService : Service() {
             i++
             Handler(Looper.getMainLooper()).postDelayed({
                 if (i==1){
-                    Log.i(TAG, "Button Bluetooth Pressed!!!")
                     Handler(Looper.getMainLooper())
                         .post { makeStatusNotification(
                             "Simple Click", applicationContext, 3) }
                 }else if (i==2){
-                    Log.i(TAG, "Button Bluetooth twice")
                     Handler(Looper.getMainLooper())
                         .post { makeStatusNotification(
                             "CLICK SOS", applicationContext, 20) }
