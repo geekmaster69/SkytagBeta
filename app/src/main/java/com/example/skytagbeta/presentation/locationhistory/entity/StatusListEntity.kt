@@ -1,4 +1,4 @@
-package com.example.skytagbeta.presentation.main.model.entity
+package com.example.skytagbeta.presentation.locationhistory.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -14,5 +14,6 @@ data class StatusListEntity(
     var date: String = "",
     var battery: String = "",
     var ble: String = "",
-    var network: String = ""
+    var network: String = "",
+    var code: String = ""
 ): Serializable

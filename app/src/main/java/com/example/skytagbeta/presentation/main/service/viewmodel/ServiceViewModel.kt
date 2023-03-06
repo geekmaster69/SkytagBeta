@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.skytagbeta.base.db.StatusListApplication
+import com.example.skytagbeta.presentation.locationhistory.entity.StatusListEntity
 import com.example.skytagbeta.presentation.main.service.model.UserInfo
 import com.example.skytagbeta.presentation.main.service.model.UserInfoResponse
 import com.example.skytagbeta.presentation.main.service.network.UserService
@@ -26,4 +28,14 @@ class ServiceViewModel : ViewModel(){
             }
         }
     }
+
+    fun saveLocationSos(statusListEntity: StatusListEntity){
+        viewModelScope.launch {
+            StatusListApplication.database.statusDao().addStatus(
+                statusListEntity
+            )
+
+        }
+    }
 }
+

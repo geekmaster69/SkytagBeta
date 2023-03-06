@@ -11,7 +11,7 @@ import com.example.skytagbeta.databinding.ActivityRecordBinding
 import com.example.skytagbeta.presentation.locationhistory.adapter.StatusListAdapter
 import com.example.skytagbeta.presentation.locationhistory.datePicker.DatePickerFragment
 import com.example.skytagbeta.presentation.locationhistory.inter.OnClickListener
-import com.example.skytagbeta.presentation.main.model.entity.StatusListEntity
+import com.example.skytagbeta.presentation.locationhistory.entity.StatusListEntity
 import com.example.skytagbeta.presentation.main.viewmodel.BleServiceViewModel
 import com.example.skytagbeta.presentation.mapFragment.MapFragment
 

@@ -12,7 +12,7 @@ import com.example.skytagbeta.R
 import com.example.skytagbeta.base.utils.showToast
 import com.example.skytagbeta.databinding.FragmentMapBinding
 import com.example.skytagbeta.presentation.locationhistory.LocationHistory
-import com.example.skytagbeta.presentation.main.model.entity.StatusListEntity
+import com.example.skytagbeta.presentation.locationhistory.entity.StatusListEntity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback

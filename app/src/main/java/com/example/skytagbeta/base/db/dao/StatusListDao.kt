@@ -1,7 +1,7 @@
 package com.example.skytagbeta.base.db.dao
 
 import androidx.room.*
-import com.example.skytagbeta.presentation.main.model.entity.StatusListEntity
+import com.example.skytagbeta.presentation.locationhistory.entity.StatusListEntity
 
 @Dao
 interface StatusListDao {

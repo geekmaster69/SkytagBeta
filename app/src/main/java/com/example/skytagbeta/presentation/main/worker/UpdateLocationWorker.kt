@@ -7,7 +7,7 @@ import androidx.work.WorkerParameters
 import com.example.skytagbeta.base.Constants
 import com.example.skytagbeta.base.db.StatusListApplication
 import com.example.skytagbeta.base.utils.makeStatusNotification
-import com.example.skytagbeta.presentation.main.model.entity.StatusListEntity
+import com.example.skytagbeta.presentation.locationhistory.entity.StatusListEntity
 import com.example.skytagbeta.presentation.main.service.model.UserInfo
 import com.example.skytagbeta.presentation.main.service.viewmodel.ServiceViewModel
 import com.example.skytagbeta.presentation.main.utils.*
@@ -62,7 +62,8 @@ class UpdateLocationWorker(ctx: Context, params: WorkerParameters): CoroutineWor
         } catch (e: Exception) {
             Result.failure()
         } finally {
-            StatusListApplication.database.statusDao().addStatus(StatusListEntity(
+            StatusListApplication.database.statusDao().addStatus(
+                StatusListEntity(
                 lat = latitude,
                 lng = longitude,
                 accuracy = accuracy!!,
@@ -70,7 +71,9 @@ class UpdateLocationWorker(ctx: Context, params: WorkerParameters): CoroutineWor
                 gps = gpsStatus.toString(),
                 network = networkStatus.toString(),
                 ble = "$bleStatus $macAddress",
-                date = date))
+                date = date,
+                code = Constants.UPDATE_LOCATION)
+            )
         }
     }
 }

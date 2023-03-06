@@ -10,7 +10,6 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:background="@color/grey"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -43,6 +42,7 @@
                 android:textSize="@dimen/text_min_size"
                 android:layout_weight="1"
                 tools:text="00"/>
+
             <TextView
                 android:id="@+id/tvGps"
                 android:layout_width="wrap_content"
@@ -53,10 +53,23 @@
                 android:textSize="@dimen/text_min_size"
                 android:layout_weight="1"
                 tools:text="00"/>
+
+            <TextView
+                android:id="@+id/tvCode"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:drawableStartCompat="@drawable/ic_code"
+                android:textColor="@color/black"
+                android:padding="2dp"
+                android:textSize="@dimen/text_min_size"
+                android:layout_weight="1"
+                tools:text="00"/>
+
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="2dp"
                 android:background="@color/black"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -110,8 +123,10 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="2dp"
                 android:background="@color/black"/>
+
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

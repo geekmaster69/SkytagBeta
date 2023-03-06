@@ -6,8 +6,10 @@ import android.os.*
 import android.util.Log
 import com.example.skytagbeta.R
 import com.example.skytagbeta.base.Constants
+import com.example.skytagbeta.base.db.StatusListApplication
 import com.example.skytagbeta.base.utils.makeStatusNotification
 import com.example.skytagbeta.base.utils.showToast
+import com.example.skytagbeta.presentation.locationhistory.entity.StatusListEntity
 import com.example.skytagbeta.presentation.main.MainActivity
 import com.example.skytagbeta.presentation.main.gps.DefaultLocationClient
 import com.example.skytagbeta.presentation.main.gps.LocationClient
@@ -78,7 +80,7 @@ class BleService : Service() {
 
     private fun updateLocation() {
         locationClient
-            .getLocationClient(60*1000) // La ubicacion se actualiza cada X tiempo y se guarda  en Paper
+            .getLocationClient(5*60*1000) // La ubicacion se actualiza cada X tiempo y se guarda  en Paper
             .catch { e -> e.printStackTrace() }
             .onEach { location ->
                 Paper.book().write("latSos", location.latitude)
@@ -143,21 +145,15 @@ class BleService : Service() {
         val longitude = Paper.book().read<Double>("longSos") ?: 0.0
         val macAddress = Paper.book().read<String>("macAddress") ?: "offline"
         val identificador = Paper.book().read<String>("identificador")
-        val accuracy = Paper.book().read<String>("accuracy")
+        val accuracy = Paper.book().read<String>("accuracy") ?: "Not Available"
         val speedMs = Paper.book().read<Float>("speed")
         val altitude = Paper.book().read<Double>("altitude")
         val battery = getBatteryPercentage(applicationContext).toString()
+        val gpsStatus =  (getGpsStatus(applicationContext))
+        val networkStatus =  (networkStatus(applicationContext))
+        val bleStatus =  bluetoothStatus(applicationContext)
         val speed = (speedMs!!*3.6)
-        val jsonObject= JsonObject()
-        val list  = mutableListOf<String>()
-        list.add("dfsdfsdf")
-        list.add("aaaaaaaa")
-
-
-
         date = dateFormat.format(Date())
-
-
 
             val result = mGpsViewModel.gpsLocationServer( UserInfo(
                 mensaje = "RegistraPosicion",
@@ -169,13 +165,25 @@ class BleService : Service() {
                 codigo = Constants.PANIC_BUTTON,
                 fechahora = date,
                 identificador = identificador!!,
-                satelites = accuracy!!.toInt(),
+                satelites = accuracy.toInt(),
                 velocidad = speed,
                 altitud = altitude!!,
                 bateria = battery.toDouble()
               ))
-
             Log.d(TAG, result.toString())
+
+        mGpsViewModel.saveLocationSos(
+            StatusListEntity(
+                lat = latitude,
+                lng = longitude,
+                accuracy = accuracy,
+                battery = "$battery%",
+                gps = gpsStatus.toString(),
+                network = networkStatus.toString(),
+                ble = "$bleStatus $macAddress",
+                date = date,
+                code = Constants.PANIC_BUTTON)
+        )
     }
 
     private fun reeScan(){

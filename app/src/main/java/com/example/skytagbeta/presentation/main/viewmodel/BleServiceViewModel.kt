@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.skytagbeta.base.db.StatusListApplication
-import com.example.skytagbeta.presentation.main.model.entity.StatusListEntity
+import com.example.skytagbeta.presentation.locationhistory.entity.StatusListEntity
 import com.example.skytagbeta.presentation.main.service.BleService
 import kotlinx.coroutines.launch
 

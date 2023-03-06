@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.skytagbeta.R
 import com.example.skytagbeta.databinding.ItemStatusListBinding
 import com.example.skytagbeta.presentation.locationhistory.inter.OnClickListener
-import com.example.skytagbeta.presentation.main.model.entity.StatusListEntity
+import com.example.skytagbeta.presentation.locationhistory.entity.StatusListEntity
 
 class StatusListAdapter(private var status: MutableList<StatusListEntity>, private var listener: OnClickListener) : RecyclerView.Adapter<StatusListAdapter.ViewHolder>() {
 
@@ -34,6 +34,9 @@ class StatusListAdapter(private var status: MutableList<StatusListEntity>, priva
             binding.tvNetwork.text = list.network
             binding.tvTime.text = list.date
             binding.tvSatelite.text = list.accuracy
+            binding.tvCode.text = list.code
+
+            if (list.code == "20"){ binding.root.setBackgroundColor(Color.RED) }
         }
     }
 
