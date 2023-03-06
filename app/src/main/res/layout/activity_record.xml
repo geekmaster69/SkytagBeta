@@ -18,6 +18,7 @@
        android:layout_width="0dp"
        android:clickable="false"
        android:focusable="false"
+       android:textStyle="bold"
        android:hint="@string/location_history_start_date"
        android:layout_height="wrap_content"/>
 
@@ -28,9 +29,11 @@
        app:layout_constraintEnd_toEndOf="parent"
        android:layout_marginStart="@dimen/min_padding_size"
        android:hint="@string/location_history_finish_date"
+       android:textStyle="bold"
        android:layout_width="0dp"
        android:clickable="false"
        android:focusable="false"
+       android:enabled="false"
        android:layout_height="wrap_content"/>
 
 

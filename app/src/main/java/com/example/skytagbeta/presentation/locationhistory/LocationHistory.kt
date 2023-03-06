@@ -51,6 +51,7 @@ class LocationHistory : AppCompatActivity(), OnClickListener {
     private fun startDateSelected(day: Int, month: Int, year: Int){
         startDate = "$year-${(month + 1).twoDigits()}-${day.twoDigits()}"
         binding.etDate1.setText(startDate)
+        binding.etDate2.isEnabled = true
     }
 
     private fun finishDateSelected(day: Int, month: Int, year: Int){
