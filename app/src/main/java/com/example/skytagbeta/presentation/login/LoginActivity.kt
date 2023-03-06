@@ -8,18 +8,23 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
+import com.example.skytagbeta.R
 import com.example.skytagbeta.presentation.login.model.LoginUserInfo
 import com.example.skytagbeta.base.utils.IdentifierKey
 import com.example.skytagbeta.base.utils.showToast
 import com.example.skytagbeta.databinding.ActivityLoginBinding
 import com.example.skytagbeta.presentation.login.viewmodel.LoginViewModel
 import com.example.skytagbeta.presentation.main.MainActivity
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import io.paperdb.Paper
 
 
@@ -38,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         Paper.init(this)
 
-
+        setupTextFlied()
 
         identifierKey1 = identifierKey.getIdentifierKey(this).take(10) // Para enviar Coordenadas
         identifierKey2 = identifierKey.getIdentifierKey(this) // Para copiar y mandar
@@ -50,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
             if(checkAllRequiredPermissions()){
                 login()
             }else{
-                showToast(this, "Debe haceptar los permisos")
+                showToast(this, getString(R.string.loginactivity_permissions_toas))
             }
         }
 
@@ -82,6 +87,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login() {
+        binding.pbProbresBar.visibility = View.VISIBLE
 
         val user = binding.etUser.text.toString()
         val password = binding.etPassword.text.toString()
@@ -96,28 +102,36 @@ class LoginActivity : AppCompatActivity() {
             Paper.book().write("remember", false)
         }
 
-      mLoginViewModel.onLogin(LoginUserInfo(mensaje = "usuario", usuario = user, contrasena = password))
+        if (validateFields(binding.tilUser, binding.tilPassword)){
+            mLoginViewModel.onLogin(LoginUserInfo(mensaje = "usuario", usuario = user, contrasena = password))
 
-        mLoginViewModel.loginModel.observe(this){
-            when(it.estado){
 
-                200 ->{
-                    Toast.makeText(this, "Bienvenido ${it.usuario.usuario}", Toast.LENGTH_SHORT).show()
-                    Paper.book().write("user", user)
-                    Paper.book().write("contrasena", password)
-                    Paper.book().write("identificador", identifierKey1)
-                    Paper.book().write("active", true)
+            mLoginViewModel.loginModel.observe(this){
+                when(it.estado){
 
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+                    200 ->{
+                        Toast.makeText(this, "Welcome ${it.usuario.usuario}", Toast.LENGTH_SHORT).show()
+                        Paper.book().write("user", user)
+                        Paper.book().write("contrasena", password)
+                        Paper.book().write("identificador", identifierKey1)
+                        Paper.book().write("active", true)
+                        binding.pbProbresBar.visibility = View.GONE
+
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    }
+
+                    400 ->{
+                        Toast.makeText(this, getString(R.string.loginactivity_login_error), Toast.LENGTH_SHORT).show()
+                        binding.pbProbresBar.visibility = View.GONE
+
+                        Paper.book().write("active", false)
+                    }
+                    else -> {Toast.makeText(this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show()
+                        Paper.book().write("active", false)
+                        binding.pbProbresBar.visibility = View.GONE
+                    }
                 }
-
-                400 ->{
-                    Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
-
-                    Paper.book().write("active", false)
-                }
-                else -> Toast.makeText(this, "Error desconocido", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -175,15 +189,38 @@ class LoginActivity : AppCompatActivity() {
 
                 } else {
 
-                    Toast.makeText(this, "Se requieren todos los permisos", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.loginactivity_all_permission_be_required), Toast.LENGTH_LONG).show()
                     finish()
                     break
                 }
             }
         } else {
-            Toast.makeText(this, "Se requieren todos los permisos", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.loginactivity_all_permission_be_required), Toast.LENGTH_LONG).show()
             finish()
         }
     }
 
+    private fun validateFields(vararg textFields: TextInputLayout): Boolean{
+        var isValid = true
+
+        for (textField in textFields){
+            if (textField.editText?.text.toString().trim().isEmpty()){
+                textField.error = getString(R.string.helper_required)
+                isValid = false
+            } else textField.error = null
+        }
+
+        if (!isValid)
+            showToast(this, getString(R.string.edit_store_message_valid))
+        binding.pbProbresBar.visibility = View.GONE
+
+        return isValid
+    }
+
+    private fun setupTextFlied(){
+        with(binding){
+            etUser.addTextChangedListener { validateFields(tilUser) }
+            etPassword.addTextChangedListener { validateFields(tilPassword) }
+        }
+    }
 }

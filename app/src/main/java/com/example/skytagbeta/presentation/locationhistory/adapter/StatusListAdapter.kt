@@ -34,9 +34,8 @@ class StatusListAdapter(private var status: MutableList<StatusListEntity>, priva
             binding.tvNetwork.text = list.network
             binding.tvTime.text = list.date
             binding.tvSatelite.text = list.accuracy
-            binding.tvCode.text = list.code
 
-            if (list.code == "20"){ binding.root.setBackgroundColor(Color.RED) }
+            if (list.code == "20"){ binding.root.setCardBackgroundColor(Color.parseColor("#CB3234")) }
         }
     }
 

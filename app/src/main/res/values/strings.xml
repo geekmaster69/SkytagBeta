@@ -14,10 +14,10 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="login_user">Usuario</string>
-    <string name="login_password">password</string>
-    <string name="login_log">Entrar</string>
-    <string name="login_copi_identifier">Copiar ID</string>
+    <string name="login_user">User</string>
+    <string name="login_password">Password</string>
+    <string name="login_log">Login</string>
+    <string name="login_copi_identifier">Copy ID</string>
     <string name="image_login">image login</string>
     <string name="location_required_error">GPS Active</string>
     <string name="remember_me">Remember me</string>
@@ -36,4 +36,10 @@
     <string name="terrain_map">Terrain Map</string>
     <string name="location_history_start_date">Start Date</string>
     <string name="location_history_finish_date">Finish Date</string>
+    <string name="loginactivity_login_error">Wrong username or password</string>
+    <string name="unknown_error">Unknown Error</string>
+    <string name="loginactivity_permissions_toas">You must accept the permissions</string>
+    <string name="loginactivity_all_permission_be_required">Be require all permissions</string>
+    <string name="helper_required">Required</string>
+    <string name="edit_store_message_valid">" Review the required fields."</string>
 </resources>

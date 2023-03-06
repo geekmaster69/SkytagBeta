@@ -143,7 +143,7 @@ class BleService : Service() {
 
         val latitude = Paper.book().read<Double>("latSos") ?: 0.0
         val longitude = Paper.book().read<Double>("longSos") ?: 0.0
-        val macAddress = Paper.book().read<String>("macAddress") ?: "offline"
+        val macAddress = Paper.book().read<String>("macAddress") ?: "Offline"
         val identificador = Paper.book().read<String>("identificador")
         val accuracy = Paper.book().read<String>("accuracy") ?: "Not Available"
         val speedMs = Paper.book().read<Float>("speed")

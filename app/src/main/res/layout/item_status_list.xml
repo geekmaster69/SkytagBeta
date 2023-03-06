@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingVertical="@dimen/max_min_padding_size"
-    android:orientation="vertical"
+    android:layout_marginVertical="@dimen/max_min_padding_size"
+    app:cardCornerRadius="@dimen/common_padding_default"
     android:layout_height="128dp">
 
     <LinearLayout
@@ -13,7 +13,6 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <LinearLayout
             android:layout_weight=".75"
@@ -53,22 +52,6 @@
                 android:textSize="@dimen/text_min_size"
                 android:layout_weight="1"
                 tools:text="00"/>
-
-            <TextView
-                android:id="@+id/tvCode"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                app:drawableStartCompat="@drawable/ic_code"
-                android:textColor="@color/black"
-                android:padding="2dp"
-                android:textSize="@dimen/text_min_size"
-                android:layout_weight="1"
-                tools:text="00"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/black"/>
 
         </LinearLayout>
 
@@ -121,12 +104,6 @@
                 android:textSize="@dimen/text_min_size"
                 tools:text="00"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/black"/>
-
-
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</androidx.cardview.widget.CardView>
