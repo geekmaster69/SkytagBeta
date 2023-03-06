@@ -34,7 +34,6 @@ class ServiceViewModel : ViewModel(){
             StatusListApplication.database.statusDao().addStatus(
                 statusListEntity
             )
-
         }
     }
 }
