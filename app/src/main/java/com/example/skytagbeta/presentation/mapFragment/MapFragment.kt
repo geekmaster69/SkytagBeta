@@ -1,15 +1,10 @@
 package com.example.skytagbeta.presentation.mapFragment
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import com.example.skytagbeta.R
-import com.example.skytagbeta.base.utils.showToast
 import com.example.skytagbeta.databinding.FragmentMapBinding
 import com.example.skytagbeta.presentation.locationhistory.LocationHistory
 import com.example.skytagbeta.presentation.locationhistory.entity.StatusListEntity
@@ -58,7 +53,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         addMarker()
 
         map.isMyLocationEnabled = true
-
     }
 
     private fun addMarker() {

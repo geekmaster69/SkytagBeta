@@ -6,7 +6,6 @@ import android.os.*
 import android.util.Log
 import com.example.skytagbeta.R
 import com.example.skytagbeta.base.Constants
-import com.example.skytagbeta.base.db.StatusListApplication
 import com.example.skytagbeta.base.utils.makeStatusNotification
 import com.example.skytagbeta.base.utils.showToast
 import com.example.skytagbeta.presentation.locationhistory.entity.StatusListEntity
@@ -17,7 +16,6 @@ import com.example.skytagbeta.presentation.main.service.model.UserInfo
 import com.example.skytagbeta.presentation.main.service.viewmodel.ServiceViewModel
 import com.example.skytagbeta.presentation.main.utils.*
 import com.google.android.gms.location.LocationServices
-import com.google.gson.JsonObject
 import com.polidea.rxandroidble3.NotificationSetupMode
 import com.polidea.rxandroidble3.RxBleClient
 import com.polidea.rxandroidble3.RxBleDevice
