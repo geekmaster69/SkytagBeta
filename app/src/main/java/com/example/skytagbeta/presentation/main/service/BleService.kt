@@ -78,7 +78,7 @@ class BleService : Service() {
 
     private fun updateLocation() {
         locationClient
-            .getLocationClient(1000) // La ubicacion se actualiza cada X tiempo y se guarda  en Paper
+            .getLocationClient(60*1000) // La ubicacion se actualiza cada X tiempo y se guarda  en Paper
             .catch { e -> e.printStackTrace() }
             .onEach { location ->
                 Paper.book().write("latSos", location.latitude)
@@ -87,7 +87,7 @@ class BleService : Service() {
                 Paper.book().write("speed", location.speed)
                 Paper.book().write("altitude", location.altitude)
 
-                Log.e(TAG, "${location.latitude} ${location.longitude}")
+                Log.d(TAG, "Lat: ${location.latitude} Lng: ${location.longitude}")
             }.launchIn(serviceScope)
     }
 
