@@ -39,7 +39,7 @@
     <string name="loginactivity_login_error">Wrong username or password</string>
     <string name="unknown_error">Unknown Error</string>
     <string name="loginactivity_permissions_toas">You must accept the permissions</string>
-    <string name="loginactivity_all_permission_be_required">Be require all permissions</string>
+    <string name="loginactivity_all_permission_be_required">All required permissions</string>
     <string name="helper_required">Required</string>
     <string name="edit_store_message_valid">" Review the required fields."</string>
 </resources>
