@@ -25,11 +25,14 @@ class WorkerViewModel(application: Application): ViewModel() {
 
     fun updateLocation(time: Long){
         val constrains = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiresBatteryNotLow(true)
+            .setRequiresStorageNotLow(true)
             .build()
 
         val updateLocation = PeriodicWorkRequest.Builder(
             UpdateLocationWorker::class.java,
-            15,
+            time,
             TimeUnit.MINUTES
         ).setConstraints(constrains)
             .addTag("updateLocation")
