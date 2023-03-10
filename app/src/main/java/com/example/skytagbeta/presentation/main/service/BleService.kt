@@ -41,6 +41,7 @@ class BleService : Service() {
     private lateinit var rxBleClient: RxBleClient
     private val serviceUUID: ParcelUuid = ParcelUuid.fromString(Constants.SERVICEUUID)
     private val characteristicUUID: UUID = UUID.fromString(Constants.CHARACTERISTICUUID)
+    private val characteristicBatteryUUID: UUID = UUID.fromString(Constants.CHARACTERISTIC_BATTERY_UUID)
     private var i: Int = 0
 
     //GPS Service
@@ -92,11 +93,12 @@ class BleService : Service() {
     }
 
     fun scanDevice(){
-        showToast(applicationContext,"Scanned...")
+        showToast(applicationContext,"Scan...")
         rxBleClient.scanBleDevices(scanSettings(), scanFilter())
             .firstElement()
             .subscribe({ scanResult ->
                 stablesConnection(scanResult.bleDevice)
+
             },onError())
     }
 
@@ -105,14 +107,23 @@ class BleService : Service() {
 
         showToast(applicationContext,"Connected to: ${bleDevice.name!!.trim()}")
         bleDevice.establishConnection(false)
+
             .subscribe({ rxBleConnection ->
                 rxBleConnection.setupIndication(characteristicUUID, NotificationSetupMode.COMPAT)
                     .subscribe({ observable ->
                         observable.subscribe({
+                            it.size
+                            Log.e("Conecion Byte Array", it.toString())
                             pressButton()
                         }, onError())
                     }, onError())
+                rxBleConnection.readCharacteristic(characteristicBatteryUUID)
+                    .ambWith {
+
+                    }
             }, reconnect())
+       /* val deviceState = bleDevice.connectionState
+        Log.i(TAG, deviceState.toString())*/
     }
 
     private fun pressButton() {
@@ -254,7 +265,6 @@ class BleService : Service() {
     private fun reconnect(): (Throwable) -> Unit {
         return { throwable -> throwable.message?.let { Log.e(TAG, it) }
             reeScan()
-            Paper.book().delete("macAddress")
         }
     }
 

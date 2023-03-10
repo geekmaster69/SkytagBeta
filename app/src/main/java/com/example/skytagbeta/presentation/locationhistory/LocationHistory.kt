@@ -14,6 +14,7 @@ import com.example.skytagbeta.presentation.locationhistory.inter.OnClickListener
 import com.example.skytagbeta.presentation.locationhistory.entity.StatusListEntity
 import com.example.skytagbeta.presentation.main.viewmodel.BleServiceViewModel
 import com.example.skytagbeta.presentation.mapFragment.MapFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class LocationHistory : AppCompatActivity(), OnClickListener {
     private lateinit var binding: ActivityRecordBinding
@@ -37,14 +38,13 @@ class LocationHistory : AppCompatActivity(), OnClickListener {
         binding.etDate2.setOnClickListener { finishDatePicker() }
 
     }
-
-    private fun finishDatePicker() {
-        val datePicker = DatePickerFragment { day, month, year -> finishDateSelected(day, month, year) }
+    private fun startDatePicker() {
+        val datePicker = DatePickerFragment { day, month, year -> startDateSelected(day, month, year) }
         datePicker.show(supportFragmentManager, "datePicker")
     }
 
-    private fun startDatePicker() {
-        val datePicker = DatePickerFragment { day, month, year -> startDateSelected(day, month, year) }
+    private fun finishDatePicker() {
+        val datePicker = DatePickerFragment { day, month, year -> finishDateSelected(day, month, year) }
         datePicker.show(supportFragmentManager, "datePicker")
     }
 
@@ -97,8 +97,19 @@ class LocationHistory : AppCompatActivity(), OnClickListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.action_delete ->{
-                mViewModel.deleteAllStatus()
+                MaterialAlertDialogBuilder(this)
+                    .setTitle("Eliminar?")
+                    .setMessage("Eliminar todo el historial de ubicaciones?")
+                    .setIcon(R.drawable.ic_delete_forever)
+                    .setPositiveButton("Eliminar"){_,_ ->
+                        mViewModel.deleteAllStatus()
+                    }
+                    .setNegativeButton("Cancelar"){_,_, ->
+                        null
+                    }.show()
+
                 setupRecyclerView()
+
             }
         }
         return super.onOptionsItemSelected(item)
@@ -124,7 +135,4 @@ class LocationHistory : AppCompatActivity(), OnClickListener {
     fun Int.twoDigits() =
         if (this <= 9) "0$this" else this.toString()
 
-    /*private fun twoDigits(n: Int): String? {
-        return if (n <= 9) "0$n" else n.toString()
-    }*/
 }

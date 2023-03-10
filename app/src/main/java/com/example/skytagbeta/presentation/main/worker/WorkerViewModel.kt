@@ -13,15 +13,10 @@ class WorkerViewModel(application: Application): ViewModel() {
     private val workManager = WorkManager.getInstance(application)
     private var statusWorker = MutableLiveData<Boolean>()
 
-
-
-
     fun cancelWork(){
         workManager.cancelAllWork()
         statusWorker.postValue(false)
     }
-
-
 
     fun updateLocation(time: Long){
         val constrains = Constraints.Builder()
@@ -45,6 +40,7 @@ class WorkerViewModel(application: Application): ViewModel() {
         statusWorker.postValue(true)
     }
 }
+
 class BlurViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

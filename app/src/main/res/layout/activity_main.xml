@@ -9,6 +9,8 @@
     android:id="@+id/containerMain"
     tools:context=".presentation.main.MainActivity">
 
+
+
     <LinearLayout
         android:id="@+id/btnTop"
         android:orientation="horizontal"
@@ -16,7 +18,12 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
+        <ImageView
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:src="@drawable/img_tag"/>
+
+        <Button
             android:src="@drawable/ic_bluetooth"
             android:id="@+id/btnAddBluetooth"
             android:layout_width="0dp"
@@ -24,10 +31,16 @@
             android:text="@string/btn_connect_ble"
             android:backgroundTint="@color/blue"
             android:layout_weight="1"
+
+            app:cornerRadius="@dimen/common_padding_default"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
     </LinearLayout>
+
+
+
+
 
     <Button
         android:id="@+id/btnStar"
