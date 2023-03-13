@@ -7,11 +7,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.location.LocationManager
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.BatteryManager
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
-import androidx.core.content.getSystemService
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,10 +31,23 @@ fun getGpsStatus(ctx: Context): Boolean {
     return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
 }
 
-fun networkStatus(ctx: Context): Boolean {
-    val connectivityManager = ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-    val actNetInfo = connectivityManager!!.activeNetworkInfo
-    return actNetInfo != null && actNetInfo.isConnected
+
+fun isWifiActive(ctx: Context): Boolean {
+    val connectivityManager =
+        ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val actNetInfo = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+
+    return actNetInfo!!.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+
+}
+
+fun isCellularActive(ctx: Context): Boolean {
+    val connectivityManager =
+        ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val actNetInfo = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+
+    return actNetInfo!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+
 }
 
 fun bluetoothStatus(ctx: Context): Boolean {
@@ -52,8 +62,19 @@ fun getDate(): String {
 }
 
 
-fun vibratePhone(ctx: Context) {
+/*fun vibratePhone(ctx: Context) {
     val vibrator = ctx?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
     vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+}*/
+
+fun isOnline(): Boolean{
+    try {
+        val p = Runtime.getRuntime().exec("ping -c 1 www.google.es")
+        val f = p.waitFor()
+        return (f == 0)
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    return false
 }
 

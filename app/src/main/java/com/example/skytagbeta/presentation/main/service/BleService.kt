@@ -147,7 +147,7 @@ class BleService : Service() {
         val altitude = Paper.book().read<Double>("altitude")
         val battery = getBatteryPercentage(applicationContext).toString()
         val gpsStatus =  (getGpsStatus(applicationContext))
-        val networkStatus =  (networkStatus(applicationContext))
+        val networkStatus =  isOnline()
         val bleStatus =  bluetoothStatus(applicationContext)
         val speed = (speedMs!!*3.6)
         date = dateFormat.format(Date())

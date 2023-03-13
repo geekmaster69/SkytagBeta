@@ -33,7 +33,7 @@ class UpdateLocationWorker(ctx: Context, params: WorkerParameters): CoroutineWor
         val speed = (speedMs!!*3.6)
         val battery = getBatteryPercentage(applicationContext).toString()
         val gpsStatus =  (getGpsStatus(applicationContext))
-        val networkStatus =  (networkStatus(applicationContext))
+        val networkStatus =  isOnline()
         val bleStatus =  bluetoothStatus(applicationContext)
         val date = getDate()
 
