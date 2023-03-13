@@ -27,7 +27,7 @@ class StatusListAdapter(private var status: MutableList<StatusListEntity>, priva
 
         with(holder){
             setListener(list)
-            binding.tvBaterry.text = list.battery
+            binding.tvBaterry.text ="${list.battery}%"
             binding.tvID.text = list.id.toString()
             binding.tvBluetooth.text = list.ble
             binding.tvGps.text = list.gps
@@ -35,7 +35,20 @@ class StatusListAdapter(private var status: MutableList<StatusListEntity>, priva
             binding.tvTime.text = list.date
             binding.tvSatelite.text = list.accuracy
 
+
             if (list.code == "20"){ binding.root.setCardBackgroundColor(Color.parseColor("#CB3234")) }
+
+            if (list.network == "false"){binding.tvNetwork.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_network_off, 0, 0, 0)}
+            else {binding.tvNetwork.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_network, 0, 0, 0)}
+
+            if (list.gps == "false"){binding.tvGps.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gps_off, 0, 0, 0)}
+            else{binding.tvGps.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gps, 0, 0, 0)}
+
+            if (list.ble == "false"){binding.tvBluetooth.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bluetooth_off, 0, 0, 0)}
+            else {binding.tvBluetooth.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bluetooth, 0, 0, 0)}
+
+
+
         }
     }
 

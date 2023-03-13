@@ -7,12 +7,14 @@ import androidx.work.WorkerParameters
 import com.example.skytagbeta.base.Constants
 import com.example.skytagbeta.base.db.StatusListApplication
 import com.example.skytagbeta.base.utils.makeStatusNotification
+import com.example.skytagbeta.base.utils.showToast
 import com.example.skytagbeta.presentation.locationhistory.entity.StatusListEntity
 import com.example.skytagbeta.presentation.main.service.model.UserInfo
 import com.example.skytagbeta.presentation.main.service.viewmodel.ServiceViewModel
 import com.example.skytagbeta.presentation.main.utils.*
 import com.google.gson.JsonObject
 import io.paperdb.Paper
+import kotlinx.coroutines.delay
 
 private const val TAG = "UpdateLocationWorker"
 class UpdateLocationWorker(ctx: Context, params: WorkerParameters): CoroutineWorker(ctx, params) {
@@ -34,13 +36,10 @@ class UpdateLocationWorker(ctx: Context, params: WorkerParameters): CoroutineWor
         val networkStatus =  (networkStatus(applicationContext))
         val bleStatus =  bluetoothStatus(applicationContext)
         val date = getDate()
-        val jsonObject= JsonObject()
-        jsonObject.addProperty("internet", networkStatus(applicationContext))
-        jsonObject.addProperty("gps", getGpsStatus(applicationContext))
-        jsonObject.addProperty("bluetootn", bluetoothStatus(applicationContext))
+
 
         return try {
-            val result = mGpsViewModel.gpsLocationServer( UserInfo(
+            mGpsViewModel.gpsLocationServer( UserInfo(
                 mensaje = "RegistraPosicion",
                 usuario = "rodrigotag",
                 longitud = longitude,
@@ -56,7 +55,31 @@ class UpdateLocationWorker(ctx: Context, params: WorkerParameters): CoroutineWor
                 bateria = battery.toDouble(),
             ))
 
-            Log.d(TAG, "$result")
+            val statusList = StatusListApplication.database.statusDao().getStatusList()
+                for (i in statusList){
+                    if (i.network == "false"){
+                        mGpsViewModel.gpsLocationServer(
+                            UserInfo(
+                                mensaje = "RegistraPosicion",
+                                usuario = "rodrigotag",
+                                longitud = i.lng,
+                                latitud = i.lat,
+                                tagkey = macAddress,
+                                contrasena = "1234",
+                                codigo = Constants.UPDATE_LOCATION,
+                                fechahora = i.date,
+                                identificador = identificador!!,
+                                satelites = i.accuracy.toInt(),
+                                velocidad = speed,
+                                altitud = altitude!!,
+                                bateria = i.battery.toDouble(),
+                                ))
+
+                        i.network = networkStatus.toString()
+
+                        StatusListApplication.database.statusDao().updateStatus(i)
+                    }
+                }
 
             Result.success()
         } catch (e: Exception) {
@@ -67,10 +90,10 @@ class UpdateLocationWorker(ctx: Context, params: WorkerParameters): CoroutineWor
                 lat = latitude,
                 lng = longitude,
                 accuracy = accuracy!!,
-                battery = "$battery%",
+                battery = battery,
                 gps = gpsStatus.toString(),
                 network = networkStatus.toString(),
-                ble = "$bleStatus $macAddress",
+                ble = "$bleStatus",
                 date = date,
                 code = Constants.UPDATE_LOCATION)
             )

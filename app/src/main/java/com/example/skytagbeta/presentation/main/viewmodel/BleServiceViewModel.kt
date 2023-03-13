@@ -7,19 +7,14 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.skytagbeta.base.db.StatusListApplication
-import com.example.skytagbeta.presentation.locationhistory.entity.StatusListEntity
 import com.example.skytagbeta.presentation.main.service.BleService
-import kotlinx.coroutines.launch
 
+const val  TAG = "BleServiceViewModel"
 class BleServiceViewModel: ViewModel() {
-    private val TAG = "BleServiceViewModel"
 
     private var mBinder = MutableLiveData<BleService.MyBinder?>()
-    var statusInfo = MutableLiveData<MutableList<StatusListEntity>>()
 
-
+    var connectionState = MutableLiveData<Boolean>()
 
     private val serviceConnection = object : ServiceConnection{
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -41,22 +36,8 @@ class BleServiceViewModel: ViewModel() {
         return serviceConnection
     }
 
-    fun getStatusList(){
-        viewModelScope.launch {
-            val statusList = StatusListApplication.database.statusDao().getStatusList()
-            statusInfo.postValue(statusList)
-        }
+    fun getConnectionState(){
     }
-
-    fun deleteAllStatus(){
-        viewModelScope.launch {
-           StatusListApplication.database.statusDao().deleteAllStatus()
-        }
-    }
-
-
-
-
 
 
 }

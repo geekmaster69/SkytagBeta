@@ -23,6 +23,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var lat: Double = 0.0
     private var lng: Double = 0.0
     private var date: String = ""
+    private var mActivity: LocationHistory? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentMapBinding.inflate(inflater, container, false)
         return binding.root
@@ -30,9 +31,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val activity = activity as? LocationHistory
+        mActivity = activity as? LocationHistory
 
-        val args = activity?.intent?.getBundleExtra("Bundle")
+        val args = mActivity?.intent?.getBundleExtra("Bundle")
         val status = args?.getSerializable("status") as StatusListEntity
 
         setHasOptionsMenu(true)
@@ -40,6 +41,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         lat = status.lat
         lng = status.lng
         date = status.date
+
+        mActivity?.supportActionBar?.title = "Number: ${status.id}"
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.frg) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -99,6 +102,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onDestroy() {
         setHasOptionsMenu(false)
+        mActivity?.supportActionBar?.title = getString(R.string.location_history)
         super.onDestroy()
     }
 

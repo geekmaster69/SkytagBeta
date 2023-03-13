@@ -24,8 +24,8 @@
             android:src="@drawable/img_tag"/>
 
         <Button
-            android:src="@drawable/ic_bluetooth"
             android:id="@+id/btnAddBluetooth"
+            android:src="@drawable/ic_bluetooth"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/btn_connect_ble"
@@ -35,6 +35,7 @@
             app:cornerRadius="@dimen/common_padding_default"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
+
 
     </LinearLayout>
 

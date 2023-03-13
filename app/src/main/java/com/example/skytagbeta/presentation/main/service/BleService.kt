@@ -94,11 +94,10 @@ class BleService : Service() {
 
     fun scanDevice(){
         showToast(applicationContext,"Scan...")
-        rxBleClient.scanBleDevices(scanSettings(), scanFilter())
+       rxBleClient.scanBleDevices(scanSettings(), scanFilter())
             .firstElement()
             .subscribe({ scanResult ->
                 stablesConnection(scanResult.bleDevice)
-
             },onError())
     }
 
@@ -107,23 +106,14 @@ class BleService : Service() {
 
         showToast(applicationContext,"Connected to: ${bleDevice.name!!.trim()}")
         bleDevice.establishConnection(false)
-
             .subscribe({ rxBleConnection ->
                 rxBleConnection.setupIndication(characteristicUUID, NotificationSetupMode.COMPAT)
                     .subscribe({ observable ->
                         observable.subscribe({
-                            it.size
-                            Log.e("Conecion Byte Array", it.toString())
                             pressButton()
                         }, onError())
                     }, onError())
-                rxBleConnection.readCharacteristic(characteristicBatteryUUID)
-                    .ambWith {
-
-                    }
             }, reconnect())
-       /* val deviceState = bleDevice.connectionState
-        Log.i(TAG, deviceState.toString())*/
     }
 
     private fun pressButton() {
@@ -184,10 +174,10 @@ class BleService : Service() {
                 lat = latitude,
                 lng = longitude,
                 accuracy = accuracy,
-                battery = "$battery%",
+                battery = battery,
                 gps = gpsStatus.toString(),
                 network = networkStatus.toString(),
-                ble = "$bleStatus $macAddress",
+                ble = "$bleStatus",
                 date = date,
                 code = Constants.PANIC_BUTTON)
         )
@@ -272,5 +262,6 @@ class BleService : Service() {
         super.onDestroy()
         serviceScope.cancel()
     }
+
 }
 

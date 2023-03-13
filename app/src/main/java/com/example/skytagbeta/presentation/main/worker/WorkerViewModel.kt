@@ -20,7 +20,6 @@ class WorkerViewModel(application: Application): ViewModel() {
 
     fun updateLocation(time: Long){
         val constrains = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
             .setRequiresBatteryNotLow(true)
             .setRequiresStorageNotLow(true)
             .build()

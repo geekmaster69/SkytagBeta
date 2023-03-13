@@ -12,13 +12,14 @@ import com.example.skytagbeta.presentation.locationhistory.adapter.StatusListAda
 import com.example.skytagbeta.presentation.locationhistory.datePicker.DatePickerFragment
 import com.example.skytagbeta.presentation.locationhistory.inter.OnClickListener
 import com.example.skytagbeta.presentation.locationhistory.entity.StatusListEntity
+import com.example.skytagbeta.presentation.locationhistory.viewmodel.LocationViewModel
 import com.example.skytagbeta.presentation.main.viewmodel.BleServiceViewModel
 import com.example.skytagbeta.presentation.mapFragment.MapFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class LocationHistory : AppCompatActivity(), OnClickListener {
     private lateinit var binding: ActivityRecordBinding
-    private val mViewModel: BleServiceViewModel by viewModels()
+    private val mViewModel: LocationViewModel by viewModels()
     private lateinit var mAdapter: StatusListAdapter
     private lateinit var mLinearLayout: LinearLayoutManager
     private var startDate: String? = null
@@ -132,7 +133,7 @@ class LocationHistory : AppCompatActivity(), OnClickListener {
         fragmentTransaction.commit()
     }
 
-    fun Int.twoDigits() =
+    private fun Int.twoDigits() =
         if (this <= 9) "0$this" else this.toString()
 
 }

@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -90,6 +89,8 @@ class MainActivity : AppCompatActivity(){
             binding.btnStop.visibility = View.GONE
             binding.btnStar.visibility = View.VISIBLE
         }
+
+
     }
 
     private fun starBleService() {
